@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Timeline Embed Generator</title>
+		<meta name="description" content="Timeline JS Embed Generator">
+		<!-- CSS -->
+		<link href="css/timeline-generator.css" rel="stylesheet">
+		<!-- JavaScript -->
+		<script type="text/javascript" src="js/timeline-embed-generator.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				updateEmbedCode();
+				$("#embed_code").click(function() { $(this).select(); });
+				$('#embed-width').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-wordpressplugin').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-font').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-height').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-maptype').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-source-url').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-language').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-startatend').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-hashbookmark').change(function(evt) { updateEmbedCode(evt); });
+				$('#embed-startatslide').change(function(evt) { updateEmbedCode(evt); });
+			});
+		</script>
+	</head>
+
+	<body>
+			
+		<section id="embed" class="embed-form">
+			<div class="container">
+				<h2>Embed Generator</h2>
+				<div class="row">
+					<div class="span7">
+						<form class="form-horizontal">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label" for="embed-source-url"><a href="https://docs.google.com/a/digitalartwork.net/previewtemplate?id=0AppSVxABhnltdEhzQjQ4MlpOaldjTmZLclQxQWFTOUE&mode=public" title"Google Spreadsheet Template" target="_blank">Google Spreadsheet</a> or other data source URL</label>
+									<div class="controls">
+										<input type="text" class="span4" id="embed-source-url">
+										<p class="help-block">Make sure you've published it.</p>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Size</label>
+									<div class="controls">
+										<div class="input-prepend">
+											<span class="add-on">Width</span><input class="input-mini" id="embed-width" type="text" value="900" placeholder="900">
+												
+										</div>
+										<div class="input-prepend input-append">
+											<span class="add-on">Height</span><input class="input-mini" id="embed-height" type="text" value="650" placeholder="650">
+										</div>
+
+									</div>
+								</div>
+								<div class="well span4 offset1 form-small">
+									<h4>Optional</h4>
+									<div class="control-group">
+										<label class="control-label" for="embed-language">Language</label>
+										<div class="controls">
+											<select id="embed-language" class="span2">
+												<option value="en">English</option>
+												<option value="fr">French</option>
+												<option value="es">Spanish</option>
+												<option value="de">German - Deutsch</option>
+												<option value="pt-br">Brazilian Portuguese</option>
+												<option value="nl">Dutch</option>
+												<option value="it">Italian</option>
+												<option value="is">Icelandic</option>
+												<option value="fo">Icelandic</option>
+												<option value="cz">Czech</option>
+												<option value="dk">Danish</option>
+												<option value="id">Indonesian</option>
+												<option value="pl">Polish</option>
+												<option value="ru">Russian</option>
+												<option value="ja">Japanese</option>
+												<option value="kr">Korean</option>
+												<option value="zh-ch">Chinese</option>
+												<option value="zh-tw">Taiwanese</option>
+											</select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="embed-maptype">Map Type</label>
+										<div class="controls">
+											<select id="embed-maptype" class="span2">
+												<option value="toner">Stamen Maps: Toner</option>
+												<option value="toner-lines">Stamen Maps: Toner Lines</option>
+												<option value="toner-labels">Stamen Maps: Toner Labels</option>
+												<option value="watercolor">Stamen Maps: Watercolor</option>
+												<option value="sterrain">Stamen Maps: Terrain</option>
+												<option value="ROADMAP">Google Maps: Roadmap</option>
+												<option value="TERRAIN">Google Maps: Terrain</option>
+												<option value="HYBRID">Google Maps: Hybrid</option>
+												<option value="SATELLITE">Google Maps: Satellite</option>
+
+											</select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="embed-font">Fonts</label>
+										<div class="controls">
+											<select id="embed-font" class="span2">
+												<option value= "Bevan-PotanoSans">			<span style="font-family: 'Alfa'">Bevan				</span> &amp; <span style="font-family: 'Alfa'">Potano Sans	</span>		</option>
+												<option value= "Merriweather-NewsCycle">	<span style="font-family: 'Alfa'">Merriweather		</span> &amp; <span style="font-family: 'Alfa'">News Cycle	</span>		</option>
+												<option value= "PoiretOne-Molengo">			<span style="font-family: 'Alfa'">Poiret One		</span> &amp; <span style="font-family: 'Alfa'">Molengo		</span>		</option>
+												<option value= "Arvo-PTSans">				<span style="font-family: 'Alfa'">Arvo				</span> &amp; <span style="font-family: 'Alfa'">PT Sans		</span>		</option>
+												<option value= "PTSerif-PTSans">			<span style="font-family: 'Alfa'">PT Serif			</span> &amp; <span style="font-family: 'Alfa'">PT Sans		</span>		</option>
+												<option value= "DroidSerif-DroidSans">		<span style="font-family: 'Alfa'">Droid Serif		</span> &amp; <span style="font-family: 'Alfa'">Droid Sans	</span>		</option>
+												<option value= "Lekton-Molengo">			<span style="font-family: 'Alfa'">Lekton			</span> &amp; <span style="font-family: 'Alfa'">Molengo		</span>		</option>
+												<option value= "NixieOne-Ledger">			<span style="font-family: 'Alfa'">Nixie One			</span> &amp; <span style="font-family: 'Alfa'">Ledger		</span>		</option>
+												<option value= "AbrilFatface-Average">		<span style="font-family: 'Alfa'">Abril Fatface		</span> &amp; <span style="font-family: 'Alfa'">Average		</span>		</option>
+												<option value= "PlayfairDisplay-Muli">		<span style="font-family: 'Alfa'">Playfair Display	</span> &amp; <span style="font-family: 'Alfa'">Muli		</span>		</option>
+												<option value= "Rancho-Gudea">				<span style="font-family: 'Alfa'">Rancho			</span> &amp; <span style="font-family: 'Alfa'">Gudea		</span>		</option>
+												<option value= "BreeSerif-OpenSans">		<span style="font-family: 'Alfa'">Bree Serif		</span> &amp; <span style="font-family: 'Alfa'">Open Sans	</span>		</option>
+												<option value= "SansitaOne-Kameron">		<span style="font-family: 'Alfa'">Sansita One		</span> &amp; <span style="font-family: 'Alfa'">Kameron		</span>		</option>
+												<option value= "Pacifico-Arimo">			<span style="font-family: 'Alfa'">Pacifico			</span> &amp; <span style="font-family: 'Alfa'">Arimo		</span>		</option>
+												<option value= "PT">			<span style="font-family: 'Alfa'">PT Sans &amp;	PT Narrow		</span> &amp; <span style="font-family: 'Alfa'">PT Serif 		</span>		</option>
+											</select>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="embed-wordpressplugin">Wordpress Plugin</label>
+										<div class="controls">
+											<label class="checkbox">
+												<input type="checkbox" id="embed-wordpressplugin" value="option1">
+												Yes
+											</label>
+											<p class="help-block">Is the embed for the <a href="https://github.com/VeriteCo/Timeline-Wordpress-Plugin" target="_blank">Wordpress Plugin</a>?</p>
+										</div>
+									</div>
+									<div class="control-group">
+											<label class="control-label" for="embed-startatend">Start at the End?</label>
+											<div class="controls">
+												<label class="checkbox">
+													<input type="checkbox" id="embed-startatend" value="option1">
+													Yes
+												</label>
+												<p class="help-block">The most recent event will be shown first</p>
+											</div>
+									</div>
+									<div class="control-group">
+											<label class="control-label" for="embed-hashbookmark">Hash Bookmarks?</label>
+											<div class="controls">
+												<label class="checkbox">
+													<input type="checkbox" id="embed-hashbookmark" value="option1">
+													Yes
+												</label>
+												<p class="help-block">On each slide change, a # will be added to the end of the url in the url bar.</p>
+											</div>
+									</div>
+									<div class="control-group">
+											<label class="control-label" for="embed-startatslide">Start at specific slide number?</label>
+											<div class="controls">
+												<div class="input-prepend">
+													<span class="add-on">Slide</span><input class="input-mini" id="embed-startatslide" type="text" value="0" placeholder="0">
+												
+												</div>
+											</div>
+									</div>
+									
+									
+								</div>
+							</fieldset>
+						</form>
+						
+					</div>
+					<div class="span5">
+						<div>
+							<form class="form-horizontal">
+								<fieldset>
+									<h4>Embed Code</h4>
+									<p class="help-block">Copy this code and paste it where you want your <span class="brand">Timeline<span class="brand-js">JS</span></span> to appear.</p><br/>
+
+									<textarea id="embed_code" readonly="readonly" style="width:100%; height:160px;min-height: 110px;max-height: 300px;resize: none;font-family: Menlo,Monaco,'Courier New',monospace;font-size: 11px;">&lt;iframe src=&#x27;http://embed.verite.co/timeline/?source=0Agl_Dv6iEbDadHdKcHlHcTB5bzhvbF9iTWwyMmJHdkE&amp;font=Bevan-PotanoSans&amp;maptype=toner&amp;width=600&amp;height=600&#x27; width=&#x27;600&#x27; height=&#x27;600&#x27; frameborder=&#x27;0&#x27;&gt;&lt;/iframe&gt;
+									</textarea>
+
+								</fieldset>
+							</form>
+							
+							<a href="#embed" target="_blank" id="preview-embed-link" class="btn">Link to Preview</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</section>
+		<section>
+			<div class="container">
+				<h2>Preview</h2>
+				<div class="row">
+					<div class="span12" id="preview-embed-iframe"></div>
+				</div>
+				
+			</div>
+		</section>
+	</body>
+</html>
