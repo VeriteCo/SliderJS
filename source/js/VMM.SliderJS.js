@@ -11,6 +11,7 @@
 /*	* CodeKit Import
 	* http://incident57.com/codekit/
 ================================================== */
+// @codekit-prepend "VMM.SliderJS.License.js";
 // @codekit-prepend "Core/VMM.StoryJS.js";
 
 
@@ -103,7 +104,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				},
 				rows: 				[1, 1, 1],
 				width: 				960,
-				height: 			200,
+				height: 			0,
 				marker: {
 					width: 			150,
 					height: 		50
@@ -114,12 +115,12 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				height: 			540
 			},
 			slider: {
-				width: 				720,
-				height: 			400,
+				width: 				960,
+				height: 			540,
 				content: {
 					width: 			720,
 					height: 		400,
-					padding: 		130
+					padding: 		100
 				},
 				nav: {
 					width: 			100,
@@ -178,11 +179,11 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			}
 			
 			config.nav.width			= config.width;
-			config.nav.height			= 200;
 			config.feature.width		= config.width;
 			config.feature.height		= config.height - config.nav.height;
 			VMM.master_config.StoryJS	= config;
 			this.events					= config.events;
+			
 		}
 		
 		/* CREATE TIMELINE STRUCTURE
@@ -206,7 +207,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				VMM.Lib.addClass(main_id, "vmm-notouch");
 			}
 			
-			slider		= new VMM.Slider(main_id + " div.slider", config);
+			slider		= new VMM.Slider($slider, config);
 			
 			if (!has_width) {
 				config.width = VMM.Lib.width($main);
@@ -253,7 +254,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		
 		function onComponentLoaded(e) {
 			config.loaded.percentloaded = config.loaded.percentloaded + 25;
-			
+			config.loaded.navigation = true;
 			if (config.loaded.slider && config.loaded.navigation) {
 				hideMessege();
 			}
@@ -272,7 +273,6 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			config.current_slide = slider.getCurrentNumber();
 			setHash(config.current_slide);
 		};
-		
 		
 		function setHash(n) {
 			if (config.hash_bookmark) {
@@ -300,9 +300,13 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				config.source	= _data;
 			}
 			
+			// LANGUAGE
 			VMM.Date.setLanguage(config.language);
 			VMM.master_config.language = config.language;
 			
+			// EXTERNAL API
+			VMM.ExternalAPI.setKeys(config.api_keys);
+			VMM.ExternalAPI.googlemaps.setMapType(config.maptype);
 			
 			// EVENTS
 			VMM.bindEvent($main, onDataReady, config.events.data_ready);
@@ -320,6 +324,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			
 			if (type.of(config.source) == "string" || type.of(config.source) == "object") {
 				//VMM.DataObj.getData(config.source);
+				getData(config.source);
 			} else {
 				//VMM.DataObj.getData(VMM.getElement(timeline_id));
 			}
@@ -339,10 +344,21 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		function getData(url) {
 			VMM.getJSON(url, function(d) {
 				//data = VMM.DataObj.getData(d);
-				VMM.fireEvent($main, config.events.data_ready);
+				prepareData(d);
+				
 			});
 		};
 		
+		function prepareData(d) {
+			var i	= 0,
+				pd	= d.sliderjs;
+			
+			for(i = 0; i < pd.slides.length; i++) {
+				pd.slides[i].uniqueid = VMM.Util.unique_ID(7);
+			}
+			
+			VMM.fireEvent($main, config.events.data_ready, pd);
+		}
 		/* MESSEGES 
 		================================================== */
 		function showMessege(e, msg) {
@@ -378,7 +394,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				ie7 = true;
 				VMM.fireEvent($main, config.events.messege, "Internet Explorer " + VMM.Browser.version + " is not supported. Please update your browser to version 8 or higher.");
 			} else {
-			
+				detachMessege();
 				reSize();
 				
 				// EVENT LISTENERS
@@ -388,10 +404,10 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				VMM.bindEvent($navigation, onNavUpdate, "UPDATE");
 			
 				// RESIZE EVENT LISTENERS
-				VMM.bindEvent($main, reSize, config.events.resize);
+				VMM.bindEvent(global, reSize, config.events.resize);
 				
 				// INITIALIZE COMPONENTS
-				//slider.init(data);
+				slider.init(data.slides);
 			}
 			
 			
@@ -404,13 +420,13 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		
 		function updateSize() {
 			trace("UPDATE SIZE");
-			config.width = VMM.Lib.width($main);
-			config.height = VMM.Lib.height($main);
+			config.width			= VMM.Lib.width($main);
+			config.height			= VMM.Lib.height($main);
 			
-			config.nav.width = config.width;
-			config.feature.width = config.width;
+			config.nav.width		= config.width;
+			config.feature.width	= config.width;
 			
-			config.feature.height = config.height - config.nav.height - 3;
+			config.feature.height	= config.height - config.nav.height - 3;
 		};
 		
 	};

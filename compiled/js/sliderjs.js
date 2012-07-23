@@ -1,4 +1,17 @@
 /*!
+	SliderJS
+	Designed and built by Zach Wise at VéritéCo
+
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+/*********************************************** 
+     Begin VMM.StoryJS.License.js 
+***********************************************/ 
+
+/*!
 	StoryJS
 	Designed and built by Zach Wise at VéritéCo
 
@@ -2270,769 +2283,6 @@ if(typeof VMM != 'undefined' && typeof VMM.LoadLib == 'undefined') {
 
 
 /*********************************************** 
-     Begin VMM.FileExtention.js 
-***********************************************/ 
-
-/*	* File Extention
-================================================== */
-if(typeof VMM != 'undefined' && typeof VMM.FileExtention == 'undefined') {
-	VMM.FileExtention = {
-		googleDocType: function(url) {
-			var fileName			= url.replace(/\s\s*$/, ''),
-				fileExtension		= "",
-				validFileExtensions = ["DOC","DOCX","XLS","XLSX","PPT","PPTX","PDF","PAGES","AI","PSD","TIFF","DXF","SVG","EPS","PS","TTF","XPS","ZIP","RAR"],
-				flag				= false;
-				
-			fileExtension = fileName.substr(fileName.length - 5, 5);
-			
-			for (var i = 0; i < validFileExtensions.length; i++) {
-				if (fileExtension.toLowerCase().match(validFileExtensions[i].toString().toLowerCase()) || fileName.match("docs.google.com") ) {
-					flag = true;
-				}
-			}
-			return flag;
-		}
-	}
-}
-
-/*********************************************** 
-     Begin VMM.js 
-***********************************************/ 
-
-/**
-	* VéritéCo JS Core
-	* Designed and built by Zach Wise at VéritéCo zach@verite.co
-
-	* This Source Code Form is subject to the terms of the Mozilla Public
-	* License, v. 2.0. If a copy of the MPL was not distributed with this
-	* file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-*/  
-
-
-/*	Simple JavaScript Inheritance
-	By John Resig http://ejohn.org/
-	MIT Licensed.
-================================================== */
-(function() {
-	var initializing = false,
-	fnTest = /xyz/.test(function() {
-		xyz;
-		}) ? /\b_super\b/: /.*/;
-		// The base Class implementation (does nothing)
-	this.Class = function() {};
-
-    // Create a new Class that inherits from this class
-	Class.extend = function(prop) {
-		var _super = this.prototype;
-
-        // Instantiate a base class (but only create the instance,
-        // don't run the init constructor)
-		initializing = true;
-		var prototype = new this();
-		initializing = false;
-
-        // Copy the properties over onto the new prototype
-		for (var name in prop) {
-            // Check if we're overwriting an existing function
-			prototype[name] = typeof prop[name] == "function" &&
-			typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-			(function(name, fn) {
-				return function() {
-					var tmp = this._super;
-
-					// Add a new ._super() method that is the same method
-					// but on the super-class
-					this._super = _super[name];
-
-					// The method only need to be bound temporarily, so we
-					// remove it when we're done executing
-					var ret = fn.apply(this, arguments);
-					this._super = tmp;
-
-					return ret;
-				};
-			})(name, prop[name]) :
-			prop[name];
-		}
-
-		// The dummy class constructor
-		function Class() {
-			// All construction is actually done in the init method
-			if (!initializing && this.init)
-			this.init.apply(this, arguments);
-		}
-
-		// Populate our constructed prototype object
-		Class.prototype = prototype;
-
-		// Enforce the constructor to be what we expect
-		Class.prototype.constructor = Class;
-
-		// And make this class extendable
-		Class.extend = arguments.callee;
-
-		return Class;
-    };
-})();
-
-/*	Access to the Global Object
-	access the global object without hard-coding the identifier window
-================================================== */
-var global = (function () {
-   return this || (1,eval)('this');
-}());
-
-/* VMM
-================================================== */
-if (typeof VMM == 'undefined') {
-	
-	/* Main Scope Container
-	================================================== */
-	//var VMM = {};
-	var VMM = Class.extend({});
-	
-	/* Debug
-	================================================== */
-	VMM.debug = true;
-	
-	/* Master Config
-	================================================== */
-	
-	VMM.master_config = ({
-		
-		init: function() {
-			return this;
-		},
-		
-		sizes: {
-			api: {
-				width:			0,
-				height:			0
-			}
-		},
-		
-		vp:				"Pellentesque nibh felis, eleifend id, commodo in, interdum vitae, leo",
-		
-		api_keys_master: {
-			flickr:		"RAIvxHY4hE/Elm5cieh4X5ptMyDpj7MYIxziGxi0WGCcy1s+yr7rKQ==",
-			google:		"jwNGnYw4hE9lmAez4ll0QD+jo6SKBJFknkopLS4FrSAuGfIwyj57AusuR0s8dAo=",
-			twitter:	""
-		},
-		
-		timers: {
-			api:			7000
-		},
-		
-		api:	{
-			pushques:		[]
-			
-		},
-		
-		twitter: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		flickr: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		youtube: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		vimeo: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		googlemaps: {
-			active:			false,
-			map_active:		false,
-			places_active:	false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		googledocs: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		googleplus: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		},
-		
-		wikipedia: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[],
-			tries:			0
-		},
-		
-		soundcloud: {
-			active:			false,
-			array:			[],
-			api_loaded:		false,
-			que:			[]
-		}
-		
-	}).init();
-	
-	//VMM.createElement(tag, value, cName, attrs, styles);
-	VMM.createElement = function(tag, value, cName, attrs, styles) {
-		
-		var ce = "";
-		
-		if (tag != null && tag != "") {
-			
-			// TAG
-			ce += "<" + tag;
-			if (cName != null && cName != "") {
-				ce += " class='" + cName + "'";
-			};
-			
-			if (attrs != null && attrs != "") {
-				ce += " " + attrs;
-			};
-			
-			if (styles != null && styles != "") {
-				ce += " style='" + styles + "'";
-			};
-			
-			ce += ">";
-			
-			if (value != null && value != "") {
-				ce += value;
-			}
-			
-			// CLOSE TAG
-			ce = ce + "</" + tag + ">";
-		}
-		
-		return ce;
-		
-    };
-
-	VMM.createMediaElement = function(media, caption, credit) {
-		
-		var ce = "";
-		
-		var _valid = false;
-		
-		ce += "<div class='media'>";
-		
-		if (media != null && media != "") {
-			
-			valid = true;
-			
-			ce += "<img src='" + media + "'>";
-			
-			// CREDIT
-			if (credit != null && credit != "") {
-				ce += VMM.createElement("div", credit, "credit");
-			}
-			
-			// CAPTION
-			if (caption != null && caption != "") {
-				ce += VMM.createElement("div", caption, "caption");
-			}
-
-		}
-		
-		ce += "</div>";
-		
-		return ce;
-		
-    };
-
-	// Hide URL Bar for iOS and Android by Scott Jehl
-	// https://gist.github.com/1183357
-
-	VMM.hideUrlBar = function () {
-		var win = window,
-			doc = win.document;
-
-		// If there's a hash, or addEventListener is undefined, stop here
-		if( !location.hash || !win.addEventListener ){
-
-			//scroll to 1
-			window.scrollTo( 0, 1 );
-			var scrollTop = 1,
-
-			//reset to 0 on bodyready, if needed
-			bodycheck = setInterval(function(){
-				if( doc.body ){
-					clearInterval( bodycheck );
-					scrollTop = "scrollTop" in doc.body ? doc.body.scrollTop : 1;
-					win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
-				}	
-			}, 15 );
-
-			win.addEventListener( "load", function(){
-				setTimeout(function(){
-					//reset to hide addr bar at onload
-					win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
-				}, 0);
-			}, false );
-		}
-	};
-	
-
-}
-
-/* Trace (console.log)
-================================================== */
-function trace( msg ) {
-	if (VMM.debug) {
-		if (window.console) {
-			console.log(msg);
-		} else if ( typeof( jsTrace ) != 'undefined' ) {
-			jsTrace.send( msg );
-		} else {
-			//alert(msg);
-		}
-	}
-}
-
-/*	Array Remove - By John Resig (MIT Licensed)
-	http://ejohn.org/blog/javascript-array-remove/
-================================================== */
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-}
-
-/* Extending Date to include Week
-================================================== */
-Date.prototype.getWeek = function() {
-	var onejan = new Date(this.getFullYear(),0,1);
-	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
-}
-
-/* Extending Date to include Day of Year
-================================================== */
-Date.prototype.getDayOfYear = function() {
-	var onejan = new Date(this.getFullYear(),0,1);
-	return Math.ceil((this - onejan) / 86400000);
-}
-
-/* A MORE SPECIFIC TYPEOF();
-//	http://rolandog.com/archives/2007/01/18/typeof-a-more-specific-typeof/
-================================================== */
-// type.of()
-var is={
-	Null:function(a){return a===null;},
-	Undefined:function(a){return a===undefined;},
-	nt:function(a){return(a===null||a===undefined);},
-	Function:function(a){return(typeof(a)==="function")?a.constructor.toString().match(/Function/)!==null:false;},
-	String:function(a){return(typeof(a)==="string")?true:(typeof(a)==="object")?a.constructor.toString().match(/string/i)!==null:false;},
-	Array:function(a){return(typeof(a)==="object")?a.constructor.toString().match(/array/i)!==null||a.length!==undefined:false;},
-	Boolean:function(a){return(typeof(a)==="boolean")?true:(typeof(a)==="object")?a.constructor.toString().match(/boolean/i)!==null:false;},
-	Date:function(a){return(typeof(a)==="date")?true:(typeof(a)==="object")?a.constructor.toString().match(/date/i)!==null:false;},
-	HTML:function(a){return(typeof(a)==="object")?a.constructor.toString().match(/html/i)!==null:false;},
-	Number:function(a){return(typeof(a)==="number")?true:(typeof(a)==="object")?a.constructor.toString().match(/Number/)!==null:false;},
-	Object:function(a){return(typeof(a)==="object")?a.constructor.toString().match(/object/i)!==null:false;},
-	RegExp:function(a){return(typeof(a)==="function")?a.constructor.toString().match(/regexp/i)!==null:false;}
-};
-var type={
-	of:function(a){
-		for(var i in is){
-			if(is[i](a)){
-				return i.toLowerCase();
-			}
-		}
-	}
-};
-
-
-
-
-
-/*********************************************** 
-     Begin VMM.Date.js 
-***********************************************/ 
-
-/*	* Utilities and Useful Functions
-================================================== */
-if(typeof VMM != 'undefined' && typeof VMM.Date == 'undefined') {
-	
-	VMM.Date = ({
-		
-		init: function() {
-			return this;
-		},
-		
-		dateformats: {
-			year: "yyyy",
-			month_short: "mmm",
-			month: "mmmm yyyy",
-			full_short: "mmm d",
-			full: "mmmm d',' yyyy",
-			time_no_seconds_short: "h:MM TT",
-			time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
-			full_long: "mmm d',' yyyy 'at' hh:MM TT",
-			full_long_small_date: "hh:MM TT'<br/><small>mmm d',' yyyy'</small>'"
-		},
-			
-		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-		day_abbr: ["Sun.", "Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
-		hour: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-		hour_suffix: ["am"],
-			
-		//B.C.
-		bc_format: {
-			year: "yyyy",
-			month_short: "mmm",
-			month: "mmmm yyyy",
-			full_short: "mmm d",
-			full: "mmmm d',' yyyy",
-			time_no_seconds_short: "h:MM TT",
-			time_no_seconds_small_date: "dddd', 'h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
-			full_long: "dddd',' mmm d',' yyyy 'at' hh:MM TT",
-			full_long_small_date: "hh:MM TT'<br/><small>'dddd',' mmm d',' yyyy'</small>'"
-		},
-			
-		setLanguage: function(lang) {
-			trace("SET DATE LANGUAGE");
-			VMM.Date.dateformats		=	lang.dateformats;	
-			VMM.Date.month				=	lang.date.month;
-			VMM.Date.month_abbr			=	lang.date.month_abbr;
-			VMM.Date.day				=	lang.date.day;
-			VMM.Date.day_abbr			=	lang.date.day_abbr;
-			dateFormat.i18n.dayNames	=	lang.date.day_abbr.concat(lang.date.day);
-			dateFormat.i18n.monthNames	=	lang.date.month_abbr.concat(lang.date.month);
-		},
-			
-		parse: function(d) {
-			"use strict";
-			var date,
-				date_array,
-				time_array,
-				time_parse;
-			
-			if (type.of(d) == "date") {
-				date = d;
-			} else {
-				date = new Date(0, 0, 1, 0, 0, 0, 0);
-				
-				if ( d.match(/,/gi) ) {
-					date_array = d.split(",");
-					for(var i = 0; i < date_array.length; i++) {
-						date_array[i] = parseInt(date_array[i], 10);
-					}
-					if (	date_array[0]			) {	date.setFullYear(		date_array[0]);			}
-					if (	date_array[1]	> 1		) {	date.setMonth(			date_array[1] - 1);		}
-					if (	date_array[2]	> 1		) {	date.setDate(			date_array[2]);			}
-					if (	date_array[3]	> 1		) {	date.setHours(			date_array[3]);			}
-					if (	date_array[4]	> 1		) {	date.setMinutes(		date_array[4]);			}
-					if (	date_array[5]	> 1		) {	date.setSeconds(		date_array[5]);			}
-					if (	date_array[6]	> 1		) {	date.setMilliseconds(	date_array[6]);			}
-				} else if (d.match("/")) {
-					if (d.match(" ")) {
-						time_parse = d.split(" ");
-						if (d.match(":")) {
-							time_array = time_parse[1].split(":");
-							if (	time_array[0]	>= 1	) {		date.setHours(			time_array[0]);	}
-							if (	time_array[1]	>= 1	) {		date.setMinutes(		time_array[1]);	}
-							if (	time_array[2]	>= 1	) {		date.setSeconds(		time_array[2]);	}
-							if (	time_array[3]	>= 1	) {		date.setMilliseconds(	time_array[3]);	}
-						}
-						date_array = time_parse[0].split("/");
-					} else {
-						date_array = d.split("/");
-					}
-					if (	date_array[2]			) {	date.setFullYear(		date_array[2]);			}
-					if (	date_array[0]	> 1		) {	date.setMonth(			date_array[0] - 1);		}
-					if (	date_array[1]	> 1		) {	date.setDate(			date_array[1]);			}
-				} else if (d.length <= 5) {
-					date.setFullYear(parseInt(d, 10));
-					date.setMonth(0);
-					date.setDate(1);
-					date.setHours(0);
-					date.setMinutes(0);
-					date.setSeconds(0);
-					date.setMilliseconds(0);
-				} else if (d.match("T")) {
-					if (navigator.userAgent.match(/MSIE\s(?!9.0)/)) {
-					    // IE 8 < Won't accept dates with a "-" in them.
-						time_parse = d.split("T");
-						if (d.match(":")) {
-							time_array = _time_parse[1].split(":");
-							if (	time_array[0]	>= 1	) {		date.setHours(			time_array[0]);	}
-							if (	time_array[1]	>= 1	) {		date.setMinutes(		time_array[1]);	}
-							if (	time_array[2]	>= 1	) {		date.setSeconds(		time_array[2]);	}
-							if (	time_array[3]	>= 1	) {		date.setMilliseconds(	time_array[3]);	}
-						}
-						_d_array = time_parse[0].split("-");
-						if (	date_array[0]			) {	date.setFullYear(		date_array[0]);			}
-						if (	date_array[1]	> 1		) {	date.setMonth(			date_array[1] - 1);		}
-						if (	date_array[2]	> 1		) {	date.setDate(			date_array[2]);			}
-						
-					} else {
-						date = new Date(Date.parse(d));
-					}
-				} else {
-					date = new Date(
-						parseInt(d.slice(0,4), 10), 
-						parseInt(d.slice(4,6), 10) - 1, 
-						parseInt(d.slice(6,8), 10), 
-						parseInt(d.slice(8,10), 10), 
-						parseInt(d.slice(10,12), 10)
-					);
-				}
-				
-			}
-			return date;
-		},
-			
-		prettyDate: function(d, is_abbr, d2) {
-			var _date,
-				_date2,
-				format,
-				bc_check,
-				is_pair = false,
-				bc_original,
-				bc_number,
-				bc_string;
-				
-			if (d2 != null) {
-				is_pair = true;
-			}
-			
-			
-			if (type.of(d) == "date") {
-				if (d.getMonth() === 0 && d.getDate() == 1 && d.getHours() === 0 && d.getMinutes() === 0 ) {
-					// YEAR ONLY
-					format = VMM.Date.dateformats.year;
-				} else if (d.getDate() <= 1 && d.getHours() === 0 && d.getMinutes() === 0) {
-					// YEAR MONTH
-					if (is_abbr) {
-						format = VMM.Date.dateformats.month_short;
-					} else {
-						format = VMM.Date.dateformats.month;
-					}
-				} else if (d.getHours() === 0 && d.getMinutes() === 0) {
-					// YEAR MONTH DAY
-					if (is_abbr) {
-						format = VMM.Date.dateformats.full_short;
-					} else {
-						format = VMM.Date.dateformats.full;
-					}
-				} else  if (d.getMinutes() === 0) {
-					// YEAR MONTH DAY HOUR
-					if (is_abbr) {
-						format = VMM.Date.dateformats.time_no_seconds_short;
-					} else {
-						format = VMM.Date.dateformats.time_no_seconds_small_date;
-					}
-				} else {
-					// YEAR MONTH DAY HOUR MINUTE
-					if (is_abbr){
-						format = VMM.Date.dateformats.time_no_seconds_short; 
-					} else {
-						format = VMM.Date.dateformats.full_long; 
-					}
-				}
-				
-				_date = dateFormat(d, format, false);
-				bc_check = _date.split(" ");
-					
-				// BC TIME SUPPORT
-				for(var i = 0; i < bc_check.length; i++) {
-					if ( parseInt(bc_check[i], 10) < 0 ) {
-						trace("YEAR IS BC");
-						bc_original	= bc_check[i];
-						bc_number	= Math.abs( parseInt(bc_check[i], 10) );
-						bc_string	= bc_number.toString() + " B.C.";
-						_date		= _date.replace(bc_original, bc_string);
-					}
-				}
-					
-					
-				if (is_pair) {
-					_date2 = dateFormat(d2, format);
-					bc_check = _date2.split(" ");
-					// BC TIME SUPPORT
-					for(var j = 0; j < bc_check.length; j++) {
-						if ( parseInt(bc_check[j], 10) < 0 ) {
-							trace("YEAR IS BC");
-							bc_original	= bc_check[j];
-							bc_number	= Math.abs( parseInt(bc_check[j], 10) );
-							bc_string	= bc_number.toString() + " B.C.";
-							_date2			= _date2.replace(bc_original, bc_string);
-						}
-					}
-						
-				}
-			} else {
-				trace("NOT A VALID DATE?");
-				trace(d);
-			}
-				
-			if (is_pair) {
-				return _date + " &mdash; " + _date2;
-			} else {
-				return _date;
-			}
-		}
-		
-	}).init();
-	
-	/*
-	 * Date Format 1.2.3
-	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-	 * MIT license
-	 *
-	 * Includes enhancements by Scott Trenda <scott.trenda.net>
-	 * and Kris Kowal <cixar.com/~kris.kowal/>
-	 *
-	 * Accepts a date, a mask, or a date and a mask.
-	 * Returns a formatted version of the given date.
-	 * The date defaults to the current date/time.
-	 * The mask defaults to dateFormat.masks.default.
-	 */
-
-	var dateFormat = function () {
-		var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
-			timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
-			timezoneClip = /[^-+\dA-Z]/g,
-			pad = function (val, len) {
-				val = String(val);
-				len = len || 2;
-				while (val.length < len) val = "0" + val;
-				return val;
-			};
-
-		// Regexes and supporting functions are cached through closure
-		return function (date, mask, utc) {
-			var dF = dateFormat;
-
-			// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
-			if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
-				mask = date;
-				date = undefined;
-			}
-
-			// Passing date through Date applies Date.parse, if necessary
-			// Caused problems in IE
-			// date = date ? new Date(date) : new Date;
-			if (isNaN(date)) {
-				trace("invalid date " + date);
-				//return "";
-			} 
-
-			mask = String(dF.masks[mask] || mask || dF.masks["default"]);
-
-			// Allow setting the utc argument via the mask
-			if (mask.slice(0, 4) == "UTC:") {
-				mask = mask.slice(4);
-				utc = true;
-			}
-
-			var	_ = utc ? "getUTC" : "get",
-				d = date[_ + "Date"](),
-				D = date[_ + "Day"](),
-				m = date[_ + "Month"](),
-				y = date[_ + "FullYear"](),
-				H = date[_ + "Hours"](),
-				M = date[_ + "Minutes"](),
-				s = date[_ + "Seconds"](),
-				L = date[_ + "Milliseconds"](),
-				o = utc ? 0 : date.getTimezoneOffset(),
-				flags = {
-					d:    d,
-					dd:   pad(d),
-					ddd:  dF.i18n.dayNames[D],
-					dddd: dF.i18n.dayNames[D + 7],
-					m:    m + 1,
-					mm:   pad(m + 1),
-					mmm:  dF.i18n.monthNames[m],
-					mmmm: dF.i18n.monthNames[m + 12],
-					yy:   String(y).slice(2),
-					yyyy: y,
-					h:    H % 12 || 12,
-					hh:   pad(H % 12 || 12),
-					H:    H,
-					HH:   pad(H),
-					M:    M,
-					MM:   pad(M),
-					s:    s,
-					ss:   pad(s),
-					l:    pad(L, 3),
-					L:    pad(L > 99 ? Math.round(L / 10) : L),
-					t:    H < 12 ? "a"  : "p",
-					tt:   H < 12 ? "am" : "pm",
-					T:    H < 12 ? "A"  : "P",
-					TT:   H < 12 ? "AM" : "PM",
-					Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
-					o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-					S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
-				};
-
-			return mask.replace(token, function ($0) {
-				return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
-			});
-		};
-	}();
-
-	// Some common format strings
-	dateFormat.masks = {
-		"default":      "ddd mmm dd yyyy HH:MM:ss",
-		shortDate:      "m/d/yy",
-		mediumDate:     "mmm d, yyyy",
-		longDate:       "mmmm d, yyyy",
-		fullDate:       "dddd, mmmm d, yyyy",
-		shortTime:      "h:MM TT",
-		mediumTime:     "h:MM:ss TT",
-		longTime:       "h:MM:ss TT Z",
-		isoDate:        "yyyy-mm-dd",
-		isoTime:        "HH:MM:ss",
-		isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
-		isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
-	};
-
-	// Internationalization strings
-	dateFormat.i18n = {
-		dayNames: [
-			"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
-			"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
-		],
-		monthNames: [
-			"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-			"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
-		]
-	};
-
-	// For convenience...
-	Date.prototype.format = function (mask, utc) {
-		return dateFormat(this, mask, utc);
-	};
-	
-}
-
-/*********************************************** 
      Begin VMM.Library.js 
 ***********************************************/ 
 
@@ -3639,6 +2889,1020 @@ if( typeof( jQuery ) != 'undefined' ){
 
 
 /*********************************************** 
+     Begin VMM.Date.js 
+***********************************************/ 
+
+/*	* Utilities and Useful Functions
+================================================== */
+if(typeof VMM != 'undefined' && typeof VMM.Date == 'undefined') {
+	
+	VMM.Date = ({
+		
+		init: function() {
+			return this;
+		},
+		
+		dateformats: {
+			year: "yyyy",
+			month_short: "mmm",
+			month: "mmmm yyyy",
+			full_short: "mmm d",
+			full: "mmmm d',' yyyy",
+			time_no_seconds_short: "h:MM TT",
+			time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+			full_long: "mmm d',' yyyy 'at' hh:MM TT",
+			full_long_small_date: "hh:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+		},
+			
+		month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+		day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		day_abbr: ["Sun.", "Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."],
+		hour: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+		hour_suffix: ["am"],
+			
+		//B.C.
+		bc_format: {
+			year: "yyyy",
+			month_short: "mmm",
+			month: "mmmm yyyy",
+			full_short: "mmm d",
+			full: "mmmm d',' yyyy",
+			time_no_seconds_short: "h:MM TT",
+			time_no_seconds_small_date: "dddd', 'h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+			full_long: "dddd',' mmm d',' yyyy 'at' hh:MM TT",
+			full_long_small_date: "hh:MM TT'<br/><small>'dddd',' mmm d',' yyyy'</small>'"
+		},
+			
+		setLanguage: function(lang) {
+			trace("SET DATE LANGUAGE");
+			VMM.Date.dateformats		=	lang.dateformats;	
+			VMM.Date.month				=	lang.date.month;
+			VMM.Date.month_abbr			=	lang.date.month_abbr;
+			VMM.Date.day				=	lang.date.day;
+			VMM.Date.day_abbr			=	lang.date.day_abbr;
+			dateFormat.i18n.dayNames	=	lang.date.day_abbr.concat(lang.date.day);
+			dateFormat.i18n.monthNames	=	lang.date.month_abbr.concat(lang.date.month);
+		},
+			
+		parse: function(d) {
+			"use strict";
+			var date,
+				date_array,
+				time_array,
+				time_parse;
+			
+			if (type.of(d) == "date") {
+				date = d;
+			} else {
+				date = new Date(0, 0, 1, 0, 0, 0, 0);
+				
+				if ( d.match(/,/gi) ) {
+					date_array = d.split(",");
+					for(var i = 0; i < date_array.length; i++) {
+						date_array[i] = parseInt(date_array[i], 10);
+					}
+					if (	date_array[0]			) {	date.setFullYear(		date_array[0]);			}
+					if (	date_array[1]	> 1		) {	date.setMonth(			date_array[1] - 1);		}
+					if (	date_array[2]	> 1		) {	date.setDate(			date_array[2]);			}
+					if (	date_array[3]	> 1		) {	date.setHours(			date_array[3]);			}
+					if (	date_array[4]	> 1		) {	date.setMinutes(		date_array[4]);			}
+					if (	date_array[5]	> 1		) {	date.setSeconds(		date_array[5]);			}
+					if (	date_array[6]	> 1		) {	date.setMilliseconds(	date_array[6]);			}
+				} else if (d.match("/")) {
+					if (d.match(" ")) {
+						time_parse = d.split(" ");
+						if (d.match(":")) {
+							time_array = time_parse[1].split(":");
+							if (	time_array[0]	>= 1	) {		date.setHours(			time_array[0]);	}
+							if (	time_array[1]	>= 1	) {		date.setMinutes(		time_array[1]);	}
+							if (	time_array[2]	>= 1	) {		date.setSeconds(		time_array[2]);	}
+							if (	time_array[3]	>= 1	) {		date.setMilliseconds(	time_array[3]);	}
+						}
+						date_array = time_parse[0].split("/");
+					} else {
+						date_array = d.split("/");
+					}
+					if (	date_array[2]			) {	date.setFullYear(		date_array[2]);			}
+					if (	date_array[0]	> 1		) {	date.setMonth(			date_array[0] - 1);		}
+					if (	date_array[1]	> 1		) {	date.setDate(			date_array[1]);			}
+				} else if (d.length <= 5) {
+					date.setFullYear(parseInt(d, 10));
+					date.setMonth(0);
+					date.setDate(1);
+					date.setHours(0);
+					date.setMinutes(0);
+					date.setSeconds(0);
+					date.setMilliseconds(0);
+				} else if (d.match("T")) {
+					if (navigator.userAgent.match(/MSIE\s(?!9.0)/)) {
+					    // IE 8 < Won't accept dates with a "-" in them.
+						time_parse = d.split("T");
+						if (d.match(":")) {
+							time_array = _time_parse[1].split(":");
+							if (	time_array[0]	>= 1	) {		date.setHours(			time_array[0]);	}
+							if (	time_array[1]	>= 1	) {		date.setMinutes(		time_array[1]);	}
+							if (	time_array[2]	>= 1	) {		date.setSeconds(		time_array[2]);	}
+							if (	time_array[3]	>= 1	) {		date.setMilliseconds(	time_array[3]);	}
+						}
+						_d_array = time_parse[0].split("-");
+						if (	date_array[0]			) {	date.setFullYear(		date_array[0]);			}
+						if (	date_array[1]	> 1		) {	date.setMonth(			date_array[1] - 1);		}
+						if (	date_array[2]	> 1		) {	date.setDate(			date_array[2]);			}
+						
+					} else {
+						date = new Date(Date.parse(d));
+					}
+				} else {
+					date = new Date(
+						parseInt(d.slice(0,4), 10), 
+						parseInt(d.slice(4,6), 10) - 1, 
+						parseInt(d.slice(6,8), 10), 
+						parseInt(d.slice(8,10), 10), 
+						parseInt(d.slice(10,12), 10)
+					);
+				}
+				
+			}
+			return date;
+		},
+			
+		prettyDate: function(d, is_abbr, d2) {
+			var _date,
+				_date2,
+				format,
+				bc_check,
+				is_pair = false,
+				bc_original,
+				bc_number,
+				bc_string;
+				
+			if (d2 != null) {
+				is_pair = true;
+			}
+			
+			
+			if (type.of(d) == "date") {
+				if (d.getMonth() === 0 && d.getDate() == 1 && d.getHours() === 0 && d.getMinutes() === 0 ) {
+					// YEAR ONLY
+					format = VMM.Date.dateformats.year;
+				} else if (d.getDate() <= 1 && d.getHours() === 0 && d.getMinutes() === 0) {
+					// YEAR MONTH
+					if (is_abbr) {
+						format = VMM.Date.dateformats.month_short;
+					} else {
+						format = VMM.Date.dateformats.month;
+					}
+				} else if (d.getHours() === 0 && d.getMinutes() === 0) {
+					// YEAR MONTH DAY
+					if (is_abbr) {
+						format = VMM.Date.dateformats.full_short;
+					} else {
+						format = VMM.Date.dateformats.full;
+					}
+				} else  if (d.getMinutes() === 0) {
+					// YEAR MONTH DAY HOUR
+					if (is_abbr) {
+						format = VMM.Date.dateformats.time_no_seconds_short;
+					} else {
+						format = VMM.Date.dateformats.time_no_seconds_small_date;
+					}
+				} else {
+					// YEAR MONTH DAY HOUR MINUTE
+					if (is_abbr){
+						format = VMM.Date.dateformats.time_no_seconds_short; 
+					} else {
+						format = VMM.Date.dateformats.full_long; 
+					}
+				}
+				
+				_date = dateFormat(d, format, false);
+				bc_check = _date.split(" ");
+					
+				// BC TIME SUPPORT
+				for(var i = 0; i < bc_check.length; i++) {
+					if ( parseInt(bc_check[i], 10) < 0 ) {
+						trace("YEAR IS BC");
+						bc_original	= bc_check[i];
+						bc_number	= Math.abs( parseInt(bc_check[i], 10) );
+						bc_string	= bc_number.toString() + " B.C.";
+						_date		= _date.replace(bc_original, bc_string);
+					}
+				}
+					
+					
+				if (is_pair) {
+					_date2 = dateFormat(d2, format);
+					bc_check = _date2.split(" ");
+					// BC TIME SUPPORT
+					for(var j = 0; j < bc_check.length; j++) {
+						if ( parseInt(bc_check[j], 10) < 0 ) {
+							trace("YEAR IS BC");
+							bc_original	= bc_check[j];
+							bc_number	= Math.abs( parseInt(bc_check[j], 10) );
+							bc_string	= bc_number.toString() + " B.C.";
+							_date2			= _date2.replace(bc_original, bc_string);
+						}
+					}
+						
+				}
+			} else {
+				trace("NOT A VALID DATE?");
+				trace(d);
+			}
+				
+			if (is_pair) {
+				return _date + " &mdash; " + _date2;
+			} else {
+				return _date;
+			}
+		}
+		
+	}).init();
+	
+	/*
+	 * Date Format 1.2.3
+	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+	 * MIT license
+	 *
+	 * Includes enhancements by Scott Trenda <scott.trenda.net>
+	 * and Kris Kowal <cixar.com/~kris.kowal/>
+	 *
+	 * Accepts a date, a mask, or a date and a mask.
+	 * Returns a formatted version of the given date.
+	 * The date defaults to the current date/time.
+	 * The mask defaults to dateFormat.masks.default.
+	 */
+
+	var dateFormat = function () {
+		var	token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,
+			timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g,
+			timezoneClip = /[^-+\dA-Z]/g,
+			pad = function (val, len) {
+				val = String(val);
+				len = len || 2;
+				while (val.length < len) val = "0" + val;
+				return val;
+			};
+
+		// Regexes and supporting functions are cached through closure
+		return function (date, mask, utc) {
+			var dF = dateFormat;
+
+			// You can't provide utc if you skip other args (use the "UTC:" mask prefix)
+			if (arguments.length == 1 && Object.prototype.toString.call(date) == "[object String]" && !/\d/.test(date)) {
+				mask = date;
+				date = undefined;
+			}
+
+			// Passing date through Date applies Date.parse, if necessary
+			// Caused problems in IE
+			// date = date ? new Date(date) : new Date;
+			if (isNaN(date)) {
+				trace("invalid date " + date);
+				//return "";
+			} 
+
+			mask = String(dF.masks[mask] || mask || dF.masks["default"]);
+
+			// Allow setting the utc argument via the mask
+			if (mask.slice(0, 4) == "UTC:") {
+				mask = mask.slice(4);
+				utc = true;
+			}
+
+			var	_ = utc ? "getUTC" : "get",
+				d = date[_ + "Date"](),
+				D = date[_ + "Day"](),
+				m = date[_ + "Month"](),
+				y = date[_ + "FullYear"](),
+				H = date[_ + "Hours"](),
+				M = date[_ + "Minutes"](),
+				s = date[_ + "Seconds"](),
+				L = date[_ + "Milliseconds"](),
+				o = utc ? 0 : date.getTimezoneOffset(),
+				flags = {
+					d:    d,
+					dd:   pad(d),
+					ddd:  dF.i18n.dayNames[D],
+					dddd: dF.i18n.dayNames[D + 7],
+					m:    m + 1,
+					mm:   pad(m + 1),
+					mmm:  dF.i18n.monthNames[m],
+					mmmm: dF.i18n.monthNames[m + 12],
+					yy:   String(y).slice(2),
+					yyyy: y,
+					h:    H % 12 || 12,
+					hh:   pad(H % 12 || 12),
+					H:    H,
+					HH:   pad(H),
+					M:    M,
+					MM:   pad(M),
+					s:    s,
+					ss:   pad(s),
+					l:    pad(L, 3),
+					L:    pad(L > 99 ? Math.round(L / 10) : L),
+					t:    H < 12 ? "a"  : "p",
+					tt:   H < 12 ? "am" : "pm",
+					T:    H < 12 ? "A"  : "P",
+					TT:   H < 12 ? "AM" : "PM",
+					Z:    utc ? "UTC" : (String(date).match(timezone) || [""]).pop().replace(timezoneClip, ""),
+					o:    (o > 0 ? "-" : "+") + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+					S:    ["th", "st", "nd", "rd"][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10]
+				};
+
+			return mask.replace(token, function ($0) {
+				return $0 in flags ? flags[$0] : $0.slice(1, $0.length - 1);
+			});
+		};
+	}();
+
+	// Some common format strings
+	dateFormat.masks = {
+		"default":      "ddd mmm dd yyyy HH:MM:ss",
+		shortDate:      "m/d/yy",
+		mediumDate:     "mmm d, yyyy",
+		longDate:       "mmmm d, yyyy",
+		fullDate:       "dddd, mmmm d, yyyy",
+		shortTime:      "h:MM TT",
+		mediumTime:     "h:MM:ss TT",
+		longTime:       "h:MM:ss TT Z",
+		isoDate:        "yyyy-mm-dd",
+		isoTime:        "HH:MM:ss",
+		isoDateTime:    "yyyy-mm-dd'T'HH:MM:ss",
+		isoUtcDateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'"
+	};
+
+	// Internationalization strings
+	dateFormat.i18n = {
+		dayNames: [
+			"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat",
+			"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+		],
+		monthNames: [
+			"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+			"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+		]
+	};
+
+	// For convenience...
+	Date.prototype.format = function (mask, utc) {
+		return dateFormat(this, mask, utc);
+	};
+	
+}
+
+/*********************************************** 
+     Begin VMM.js 
+***********************************************/ 
+
+/**
+	* VéritéCo JS Core
+	* Designed and built by Zach Wise at VéritéCo zach@verite.co
+
+	* This Source Code Form is subject to the terms of the Mozilla Public
+	* License, v. 2.0. If a copy of the MPL was not distributed with this
+	* file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+*/  
+
+
+/*	Simple JavaScript Inheritance
+	By John Resig http://ejohn.org/
+	MIT Licensed.
+================================================== */
+(function() {
+	var initializing = false,
+	fnTest = /xyz/.test(function() {
+		xyz;
+		}) ? /\b_super\b/: /.*/;
+		// The base Class implementation (does nothing)
+	this.Class = function() {};
+
+    // Create a new Class that inherits from this class
+	Class.extend = function(prop) {
+		var _super = this.prototype;
+
+        // Instantiate a base class (but only create the instance,
+        // don't run the init constructor)
+		initializing = true;
+		var prototype = new this();
+		initializing = false;
+
+        // Copy the properties over onto the new prototype
+		for (var name in prop) {
+            // Check if we're overwriting an existing function
+			prototype[name] = typeof prop[name] == "function" &&
+			typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+			(function(name, fn) {
+				return function() {
+					var tmp = this._super;
+
+					// Add a new ._super() method that is the same method
+					// but on the super-class
+					this._super = _super[name];
+
+					// The method only need to be bound temporarily, so we
+					// remove it when we're done executing
+					var ret = fn.apply(this, arguments);
+					this._super = tmp;
+
+					return ret;
+				};
+			})(name, prop[name]) :
+			prop[name];
+		}
+
+		// The dummy class constructor
+		function Class() {
+			// All construction is actually done in the init method
+			if (!initializing && this.init)
+			this.init.apply(this, arguments);
+		}
+
+		// Populate our constructed prototype object
+		Class.prototype = prototype;
+
+		// Enforce the constructor to be what we expect
+		Class.prototype.constructor = Class;
+
+		// And make this class extendable
+		Class.extend = arguments.callee;
+
+		return Class;
+    };
+})();
+
+/*	Access to the Global Object
+	access the global object without hard-coding the identifier window
+================================================== */
+var global = (function () {
+   return this || (1,eval)('this');
+}());
+
+/* VMM
+================================================== */
+if (typeof VMM == 'undefined') {
+	
+	/* Main Scope Container
+	================================================== */
+	//var VMM = {};
+	var VMM = Class.extend({});
+	
+	/* Debug
+	================================================== */
+	VMM.debug = true;
+	
+	/* Master Config
+	================================================== */
+	
+	VMM.master_config = ({
+		
+		init: function() {
+			return this;
+		},
+		
+		sizes: {
+			api: {
+				width:			0,
+				height:			0
+			}
+		},
+		
+		vp:				"Pellentesque nibh felis, eleifend id, commodo in, interdum vitae, leo",
+		
+		api_keys_master: {
+			flickr:		"RAIvxHY4hE/Elm5cieh4X5ptMyDpj7MYIxziGxi0WGCcy1s+yr7rKQ==",
+			google:		"jwNGnYw4hE9lmAez4ll0QD+jo6SKBJFknkopLS4FrSAuGfIwyj57AusuR0s8dAo=",
+			twitter:	""
+		},
+		
+		timers: {
+			api:			7000
+		},
+		
+		api:	{
+			pushques:		[]
+			
+		},
+		
+		twitter: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		flickr: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		youtube: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		vimeo: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		googlemaps: {
+			active:			false,
+			map_active:		false,
+			places_active:	false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		googledocs: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		googleplus: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		},
+		
+		wikipedia: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[],
+			tries:			0
+		},
+		
+		soundcloud: {
+			active:			false,
+			array:			[],
+			api_loaded:		false,
+			que:			[]
+		}
+		
+	}).init();
+	
+	//VMM.createElement(tag, value, cName, attrs, styles);
+	VMM.createElement = function(tag, value, cName, attrs, styles) {
+		
+		var ce = "";
+		
+		if (tag != null && tag != "") {
+			
+			// TAG
+			ce += "<" + tag;
+			if (cName != null && cName != "") {
+				ce += " class='" + cName + "'";
+			};
+			
+			if (attrs != null && attrs != "") {
+				ce += " " + attrs;
+			};
+			
+			if (styles != null && styles != "") {
+				ce += " style='" + styles + "'";
+			};
+			
+			ce += ">";
+			
+			if (value != null && value != "") {
+				ce += value;
+			}
+			
+			// CLOSE TAG
+			ce = ce + "</" + tag + ">";
+		}
+		
+		return ce;
+		
+    };
+
+	VMM.createMediaElement = function(media, caption, credit) {
+		
+		var ce = "";
+		
+		var _valid = false;
+		
+		ce += "<div class='media'>";
+		
+		if (media != null && media != "") {
+			
+			valid = true;
+			
+			ce += "<img src='" + media + "'>";
+			
+			// CREDIT
+			if (credit != null && credit != "") {
+				ce += VMM.createElement("div", credit, "credit");
+			}
+			
+			// CAPTION
+			if (caption != null && caption != "") {
+				ce += VMM.createElement("div", caption, "caption");
+			}
+
+		}
+		
+		ce += "</div>";
+		
+		return ce;
+		
+    };
+
+	// Hide URL Bar for iOS and Android by Scott Jehl
+	// https://gist.github.com/1183357
+
+	VMM.hideUrlBar = function () {
+		var win = window,
+			doc = win.document;
+
+		// If there's a hash, or addEventListener is undefined, stop here
+		if( !location.hash || !win.addEventListener ){
+
+			//scroll to 1
+			window.scrollTo( 0, 1 );
+			var scrollTop = 1,
+
+			//reset to 0 on bodyready, if needed
+			bodycheck = setInterval(function(){
+				if( doc.body ){
+					clearInterval( bodycheck );
+					scrollTop = "scrollTop" in doc.body ? doc.body.scrollTop : 1;
+					win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
+				}	
+			}, 15 );
+
+			win.addEventListener( "load", function(){
+				setTimeout(function(){
+					//reset to hide addr bar at onload
+					win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
+				}, 0);
+			}, false );
+		}
+	};
+	
+
+}
+
+/* Trace (console.log)
+================================================== */
+function trace( msg ) {
+	if (VMM.debug) {
+		if (window.console) {
+			console.log(msg);
+		} else if ( typeof( jsTrace ) != 'undefined' ) {
+			jsTrace.send( msg );
+		} else {
+			//alert(msg);
+		}
+	}
+}
+
+/*	Array Remove - By John Resig (MIT Licensed)
+	http://ejohn.org/blog/javascript-array-remove/
+================================================== */
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+}
+
+/* Extending Date to include Week
+================================================== */
+Date.prototype.getWeek = function() {
+	var onejan = new Date(this.getFullYear(),0,1);
+	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
+}
+
+/* Extending Date to include Day of Year
+================================================== */
+Date.prototype.getDayOfYear = function() {
+	var onejan = new Date(this.getFullYear(),0,1);
+	return Math.ceil((this - onejan) / 86400000);
+}
+
+/* A MORE SPECIFIC TYPEOF();
+//	http://rolandog.com/archives/2007/01/18/typeof-a-more-specific-typeof/
+================================================== */
+// type.of()
+var is={
+	Null:function(a){return a===null;},
+	Undefined:function(a){return a===undefined;},
+	nt:function(a){return(a===null||a===undefined);},
+	Function:function(a){return(typeof(a)==="function")?a.constructor.toString().match(/Function/)!==null:false;},
+	String:function(a){return(typeof(a)==="string")?true:(typeof(a)==="object")?a.constructor.toString().match(/string/i)!==null:false;},
+	Array:function(a){return(typeof(a)==="object")?a.constructor.toString().match(/array/i)!==null||a.length!==undefined:false;},
+	Boolean:function(a){return(typeof(a)==="boolean")?true:(typeof(a)==="object")?a.constructor.toString().match(/boolean/i)!==null:false;},
+	Date:function(a){return(typeof(a)==="date")?true:(typeof(a)==="object")?a.constructor.toString().match(/date/i)!==null:false;},
+	HTML:function(a){return(typeof(a)==="object")?a.constructor.toString().match(/html/i)!==null:false;},
+	Number:function(a){return(typeof(a)==="number")?true:(typeof(a)==="object")?a.constructor.toString().match(/Number/)!==null:false;},
+	Object:function(a){return(typeof(a)==="object")?a.constructor.toString().match(/object/i)!==null:false;},
+	RegExp:function(a){return(typeof(a)==="function")?a.constructor.toString().match(/regexp/i)!==null:false;}
+};
+var type={
+	of:function(a){
+		for(var i in is){
+			if(is[i](a)){
+				return i.toLowerCase();
+			}
+		}
+	}
+};
+
+
+
+
+
+/*********************************************** 
+     Begin VMM.FileExtention.js 
+***********************************************/ 
+
+/*	* File Extention
+================================================== */
+if(typeof VMM != 'undefined' && typeof VMM.FileExtention == 'undefined') {
+	VMM.FileExtention = {
+		googleDocType: function(url) {
+			var fileName			= url.replace(/\s\s*$/, ''),
+				fileExtension		= "",
+				validFileExtensions = ["DOC","DOCX","XLS","XLSX","PPT","PPTX","PDF","PAGES","AI","PSD","TIFF","DXF","SVG","EPS","PS","TTF","XPS","ZIP","RAR"],
+				flag				= false;
+				
+			fileExtension = fileName.substr(fileName.length - 5, 5);
+			
+			for (var i = 0; i < validFileExtensions.length; i++) {
+				if (fileExtension.toLowerCase().match(validFileExtensions[i].toString().toLowerCase()) || fileName.match("docs.google.com") ) {
+					flag = true;
+				}
+			}
+			return flag;
+		}
+	}
+}
+
+/*********************************************** 
+     Begin VMM.LoadLib.js 
+***********************************************/ 
+
+/*	* LoadLib Based on LazyLoad by Ryan Grove
+	* https://github.com/rgrove/lazyload/ 
+	* Copyright (c) 2011 Ryan Grove <ryan@wonko.com>
+	* All rights reserved.
+
+	* Permission is hereby granted, free of charge, to any person obtaining a copy of
+	* this software and associated documentation files (the 'Software'), to deal in
+	* the Software without restriction, including without limitation the rights to
+	* use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+	* the Software, and to permit persons to whom the Software is furnished to do so,
+	* subject to the following conditions:
+
+	* The above copyright notice and this permission notice shall be included in all
+	* copies or substantial portions of the Software.
+
+================================================== */
+window.loadedJS = [];
+
+
+if(typeof VMM != 'undefined' && typeof VMM.LoadLib == 'undefined') {
+	//VMM.LoadLib.js('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', onJQueryLoaded);
+	//VMM.LoadLib.css('http://someurl.css', onCSSLoaded);
+	
+	
+	
+	VMM.LoadLib = (function (doc) {
+		var env,
+		head,
+		pending = {},
+		pollCount = 0,
+		queue = {css: [], js: []},
+		styleSheets = doc.styleSheets;
+	
+		var loaded_Array = [];
+	
+		function isLoaded(url) {
+			var has_been_loaded = false;
+			for(var i=0; i<loaded_Array.length; i++) {
+				if (loaded_Array[i] == url) {
+					has_been_loaded = true;
+				}
+			}
+			if (!has_been_loaded) {
+				loaded_Array.push(url);
+			}
+			return has_been_loaded;
+		}
+
+		function createNode(name, attrs) {
+			var node = doc.createElement(name), attr;
+
+			for (attr in attrs) {
+				if (attrs.hasOwnProperty(attr)) {
+					node.setAttribute(attr, attrs[attr]);
+				}
+			}
+
+			return node;
+		}
+
+	  function finish(type) {
+	    var p = pending[type],
+	        callback,
+	        urls;
+
+	    if (p) {
+	      callback = p.callback;
+	      urls     = p.urls;
+	      urls.shift();
+	      pollCount = 0;
+	      if (!urls.length) {
+	        callback && callback.call(p.context, p.obj);
+	        pending[type] = null;
+	        queue[type].length && load(type);
+	      }
+	    }
+	  }
+
+	  function getEnv() {
+	    var ua = navigator.userAgent;
+
+	    env = {
+
+	      async: doc.createElement('script').async === true
+	    };
+
+	    (env.webkit = /AppleWebKit\//.test(ua))
+	      || (env.ie = /MSIE/.test(ua))
+	      || (env.opera = /Opera/.test(ua))
+	      || (env.gecko = /Gecko\//.test(ua))
+	      || (env.unknown = true);
+	  }
+
+	  function load(type, urls, callback, obj, context) {
+	    var _finish = function () { finish(type); },
+	        isCSS   = type === 'css',
+	        nodes   = [],
+	        i, len, node, p, pendingUrls, url;
+
+	    env || getEnv();
+
+	    if (urls) {
+
+	      urls = typeof urls === 'string' ? [urls] : urls.concat();
+
+	      if (isCSS || env.async || env.gecko || env.opera) {
+
+	        queue[type].push({
+	          urls    : urls,
+	          callback: callback,
+	          obj     : obj,
+	          context : context
+	        });
+	      } else {
+	        for (i = 0, len = urls.length; i < len; ++i) {
+	          queue[type].push({
+	            urls    : [urls[i]],
+	            callback: i === len - 1 ? callback : null,
+	            obj     : obj,
+	            context : context
+	          });
+	        }
+	      }
+	    }
+
+	    if (pending[type] || !(p = pending[type] = queue[type].shift())) {
+	      return;
+	    }
+
+	    head || (head = doc.head || doc.getElementsByTagName('head')[0]);
+	    pendingUrls = p.urls;
+
+	    for (i = 0, len = pendingUrls.length; i < len; ++i) {
+	      url = pendingUrls[i];
+
+	      if (isCSS) {
+	          node = env.gecko ? createNode('style') : createNode('link', {
+	            href: url,
+	            rel : 'stylesheet'
+	          });
+	      } else {
+	        node = createNode('script', {src: url});
+	        node.async = false;
+	      }
+
+	      node.className = 'lazyload';
+	      node.setAttribute('charset', 'utf-8');
+
+	      if (env.ie && !isCSS) {
+	        node.onreadystatechange = function () {
+	          if (/loaded|complete/.test(node.readyState)) {
+	            node.onreadystatechange = null;
+	            _finish();
+	          }
+	        };
+	      } else if (isCSS && (env.gecko || env.webkit)) {
+	        if (env.webkit) {
+	          p.urls[i] = node.href; 
+	          pollWebKit();
+	        } else {
+	          node.innerHTML = '@import "' + url + '";';
+	          pollGecko(node);
+	        }
+	      } else {
+	        node.onload = node.onerror = _finish;
+	      }
+
+	      nodes.push(node);
+	    }
+
+	    for (i = 0, len = nodes.length; i < len; ++i) {
+	      head.appendChild(nodes[i]);
+	    }
+	  }
+
+	  function pollGecko(node) {
+	    var hasRules;
+
+	    try {
+
+	      hasRules = !!node.sheet.cssRules;
+	    } catch (ex) {
+	      pollCount += 1;
+
+	      if (pollCount < 200) {
+	        setTimeout(function () { pollGecko(node); }, 50);
+	      } else {
+
+	        hasRules && finish('css');
+	      }
+
+	      return;
+	    }
+
+	    finish('css');
+	  }
+
+	  function pollWebKit() {
+	    var css = pending.css, i;
+
+	    if (css) {
+	      i = styleSheets.length;
+
+	      while (--i >= 0) {
+	        if (styleSheets[i].href === css.urls[0]) {
+	          finish('css');
+	          break;
+	        }
+	      }
+
+	      pollCount += 1;
+
+	      if (css) {
+	        if (pollCount < 200) {
+	          setTimeout(pollWebKit, 50);
+	        } else {
+
+	          finish('css');
+	        }
+	      }
+	    }
+	  }
+
+	  return {
+
+		css: function (urls, callback, obj, context) {
+			if (isLoaded(urls)) {
+				return callback;
+			} else {
+				load('css', urls, callback, obj, context);
+			}
+		},
+
+		js: function (urls, callback, obj, context) {
+			if (isLoaded(urls)) {
+				return callback;
+			} else {
+				load('js', urls, callback, obj, context);
+			}
+		}
+
+	  };
+	})(this.document);
+}
+
+
+
+/*********************************************** 
      Begin VMM.Util.js 
 ***********************************************/ 
 
@@ -4120,257 +4384,6 @@ if(typeof VMM != 'undefined' && typeof VMM.Util == 'undefined') {
 }
 
 /*********************************************** 
-     Begin VMM.LoadLib.js 
-***********************************************/ 
-
-/*	* LoadLib Based on LazyLoad by Ryan Grove
-	* https://github.com/rgrove/lazyload/ 
-	* Copyright (c) 2011 Ryan Grove <ryan@wonko.com>
-	* All rights reserved.
-
-	* Permission is hereby granted, free of charge, to any person obtaining a copy of
-	* this software and associated documentation files (the 'Software'), to deal in
-	* the Software without restriction, including without limitation the rights to
-	* use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-	* the Software, and to permit persons to whom the Software is furnished to do so,
-	* subject to the following conditions:
-
-	* The above copyright notice and this permission notice shall be included in all
-	* copies or substantial portions of the Software.
-
-================================================== */
-window.loadedJS = [];
-
-
-if(typeof VMM != 'undefined' && typeof VMM.LoadLib == 'undefined') {
-	//VMM.LoadLib.js('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', onJQueryLoaded);
-	//VMM.LoadLib.css('http://someurl.css', onCSSLoaded);
-	
-	
-	
-	VMM.LoadLib = (function (doc) {
-		var env,
-		head,
-		pending = {},
-		pollCount = 0,
-		queue = {css: [], js: []},
-		styleSheets = doc.styleSheets;
-	
-		var loaded_Array = [];
-	
-		function isLoaded(url) {
-			var has_been_loaded = false;
-			for(var i=0; i<loaded_Array.length; i++) {
-				if (loaded_Array[i] == url) {
-					has_been_loaded = true;
-				}
-			}
-			if (!has_been_loaded) {
-				loaded_Array.push(url);
-			}
-			return has_been_loaded;
-		}
-
-		function createNode(name, attrs) {
-			var node = doc.createElement(name), attr;
-
-			for (attr in attrs) {
-				if (attrs.hasOwnProperty(attr)) {
-					node.setAttribute(attr, attrs[attr]);
-				}
-			}
-
-			return node;
-		}
-
-	  function finish(type) {
-	    var p = pending[type],
-	        callback,
-	        urls;
-
-	    if (p) {
-	      callback = p.callback;
-	      urls     = p.urls;
-	      urls.shift();
-	      pollCount = 0;
-	      if (!urls.length) {
-	        callback && callback.call(p.context, p.obj);
-	        pending[type] = null;
-	        queue[type].length && load(type);
-	      }
-	    }
-	  }
-
-	  function getEnv() {
-	    var ua = navigator.userAgent;
-
-	    env = {
-
-	      async: doc.createElement('script').async === true
-	    };
-
-	    (env.webkit = /AppleWebKit\//.test(ua))
-	      || (env.ie = /MSIE/.test(ua))
-	      || (env.opera = /Opera/.test(ua))
-	      || (env.gecko = /Gecko\//.test(ua))
-	      || (env.unknown = true);
-	  }
-
-	  function load(type, urls, callback, obj, context) {
-	    var _finish = function () { finish(type); },
-	        isCSS   = type === 'css',
-	        nodes   = [],
-	        i, len, node, p, pendingUrls, url;
-
-	    env || getEnv();
-
-	    if (urls) {
-
-	      urls = typeof urls === 'string' ? [urls] : urls.concat();
-
-	      if (isCSS || env.async || env.gecko || env.opera) {
-
-	        queue[type].push({
-	          urls    : urls,
-	          callback: callback,
-	          obj     : obj,
-	          context : context
-	        });
-	      } else {
-	        for (i = 0, len = urls.length; i < len; ++i) {
-	          queue[type].push({
-	            urls    : [urls[i]],
-	            callback: i === len - 1 ? callback : null,
-	            obj     : obj,
-	            context : context
-	          });
-	        }
-	      }
-	    }
-
-	    if (pending[type] || !(p = pending[type] = queue[type].shift())) {
-	      return;
-	    }
-
-	    head || (head = doc.head || doc.getElementsByTagName('head')[0]);
-	    pendingUrls = p.urls;
-
-	    for (i = 0, len = pendingUrls.length; i < len; ++i) {
-	      url = pendingUrls[i];
-
-	      if (isCSS) {
-	          node = env.gecko ? createNode('style') : createNode('link', {
-	            href: url,
-	            rel : 'stylesheet'
-	          });
-	      } else {
-	        node = createNode('script', {src: url});
-	        node.async = false;
-	      }
-
-	      node.className = 'lazyload';
-	      node.setAttribute('charset', 'utf-8');
-
-	      if (env.ie && !isCSS) {
-	        node.onreadystatechange = function () {
-	          if (/loaded|complete/.test(node.readyState)) {
-	            node.onreadystatechange = null;
-	            _finish();
-	          }
-	        };
-	      } else if (isCSS && (env.gecko || env.webkit)) {
-	        if (env.webkit) {
-	          p.urls[i] = node.href; 
-	          pollWebKit();
-	        } else {
-	          node.innerHTML = '@import "' + url + '";';
-	          pollGecko(node);
-	        }
-	      } else {
-	        node.onload = node.onerror = _finish;
-	      }
-
-	      nodes.push(node);
-	    }
-
-	    for (i = 0, len = nodes.length; i < len; ++i) {
-	      head.appendChild(nodes[i]);
-	    }
-	  }
-
-	  function pollGecko(node) {
-	    var hasRules;
-
-	    try {
-
-	      hasRules = !!node.sheet.cssRules;
-	    } catch (ex) {
-	      pollCount += 1;
-
-	      if (pollCount < 200) {
-	        setTimeout(function () { pollGecko(node); }, 50);
-	      } else {
-
-	        hasRules && finish('css');
-	      }
-
-	      return;
-	    }
-
-	    finish('css');
-	  }
-
-	  function pollWebKit() {
-	    var css = pending.css, i;
-
-	    if (css) {
-	      i = styleSheets.length;
-
-	      while (--i >= 0) {
-	        if (styleSheets[i].href === css.urls[0]) {
-	          finish('css');
-	          break;
-	        }
-	      }
-
-	      pollCount += 1;
-
-	      if (css) {
-	        if (pollCount < 200) {
-	          setTimeout(pollWebKit, 50);
-	        } else {
-
-	          finish('css');
-	        }
-	      }
-	    }
-	  }
-
-	  return {
-
-		css: function (urls, callback, obj, context) {
-			if (isLoaded(urls)) {
-				return callback;
-			} else {
-				load('css', urls, callback, obj, context);
-			}
-		},
-
-		js: function (urls, callback, obj, context) {
-			if (isLoaded(urls)) {
-				return callback;
-			} else {
-				load('js', urls, callback, obj, context);
-			}
-		}
-
-	  };
-	})(this.document);
-}
-
-
-
-/*********************************************** 
      Begin VMM.Core.js 
 ***********************************************/ 
 
@@ -4440,7 +4453,28 @@ if(typeof VMM != 'undefined' && typeof VMM.Language == 'undefined') {
 ================================================== */
 if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 	
-	VMM.ExternalAPI = {
+	VMM.ExternalAPI = ({
+		
+		keys: {
+			google:				"",
+			flickr:				"",
+			twitter:			""
+		},
+		
+		keys_master: {
+			vp:			"Pellentesque nibh felis, eleifend id, commodo in, interdum vitae, leo",
+			flickr:		"RAIvxHY4hE/Elm5cieh4X5ptMyDpj7MYIxziGxi0WGCcy1s+yr7rKQ==",
+			google:		"jwNGnYw4hE9lmAez4ll0QD+jo6SKBJFknkopLS4FrSAuGfIwyj57AusuR0s8dAo=",
+			twitter:	""
+		},
+		
+		init: function() {
+			return this;
+		},
+		
+		setKeys: function(d) {
+			VMM.ExternalAPI.keys	= d;
+		},
 		
 		pushQues: function() {
 			
@@ -4737,6 +4771,14 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		googlemaps: {
 			
+			maptype: "toner",
+			
+			setMapType: function(d) {
+				if (d != "") {
+					VMM.ExternalAPI.googlemaps.maptype = d;
+				}
+			},
+			
 			get: function(m) {
 				var timer, 
 					api_key,
@@ -4746,10 +4788,10 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				
 				map_vars = VMM.Util.getUrlVars(m.id);
 				
-				if (VMM.master_config.Timeline.api_keys.google != "") {
-					api_key = VMM.master_config.Timeline.api_keys.google;
+				if (VMM.ExternalAPI.keys.google != "") {
+					api_key = VMM.ExternalAPI.keys.google;
 				} else {
-					api_key = Aes.Ctr.decrypt(VMM.master_config.api_keys_master.google, VMM.master_config.vp, 256);
+					api_key = Aes.Ctr.decrypt(VMM.ExternalAPI.keys_master.google, VMM.ExternalAPI.keys_master.vp, 256);
 				}
 				
 				map_url = "http://maps.googleapis.com/maps/api/js?key=" + api_key + "&libraries=places&sensor=false&callback=VMM.ExternalAPI.googlemaps.onMapAPIReady";
@@ -4771,9 +4813,19 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 			},
 			
 			create: function(m) {
-				var map_attribution = "";
-				var layer;
-				var map;
+				var map_attribution	= "",
+					layer,
+					map,
+					map_options,
+					unique_map_id	= m.id.toString() + "_gmap",
+					map_attribution_html	= "",
+					location		= new google.maps.LatLng(41.875696,-87.624207),
+					latlong,
+					zoom			= 11,
+					has_location	= false,
+					has_zoom		= false,
+					map_bounds;
+					
 				
 				function mapProvider(name) {
 					if (name in VMM.ExternalAPI.googlemaps.map_providers) {
@@ -4821,32 +4873,25 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				/* Make the Map
 				================================================== */
 				
-				
-				if (type.of(VMM.master_config.Timeline.maptype) == "string") {
-					if (VMM.ExternalAPI.googlemaps.defaultType(VMM.master_config.Timeline.maptype)) {
-						layer				=	google.maps.MapTypeId[VMM.master_config.Timeline.maptype.toUpperCase()];
+				if (VMM.ExternalAPI.googlemaps.maptype != "") {
+					if (VMM.ExternalAPI.googlemaps.defaultType(VMM.ExternalAPI.googlemaps.maptype)) {
+						layer				=	google.maps.MapTypeId[VMM.ExternalAPI.googlemaps.maptype.toUpperCase()];
 					} else {
-						layer				=	VMM.master_config.Timeline.maptype;
+						layer				=	VMM.ExternalAPI.googlemaps.maptype;
 					}
 				} else {
 					layer					=	"toner";
 				}
 				
-				var location				=	new google.maps.LatLng(41.875696,-87.624207);
-				var latlong;
-				var zoom					=	11;
-				var has_location			=	false;
-				var has_zoom				=	false;
-				var map_bounds;
 				
 				if (type.of(VMM.Util.getUrlVars(m.url)["ll"]) == "string") {
-					has_location			=	true;
-					latlong					=	VMM.Util.getUrlVars(m.url)["ll"].split(",");
-					location				=	new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
+					has_location			= true;
+					latlong					= VMM.Util.getUrlVars(m.url)["ll"].split(",");
+					location				= new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
 					
 				} else if (type.of(VMM.Util.getUrlVars(m.url)["sll"]) == "string") {
-					latlong					=	VMM.Util.getUrlVars(m.url)["sll"].split(",");
-					location				=	new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
+					latlong					= VMM.Util.getUrlVars(m.url)["sll"].split(",");
+					location				= new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
 				} 
 				
 				if (type.of(VMM.Util.getUrlVars(m.url)["z"]) == "string") {
@@ -4854,7 +4899,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 					zoom					=	parseFloat(VMM.Util.getUrlVars(m.url)["z"]);
 				}
 				
-				var map_options = {
+				map_options = {
 					zoom:						zoom,
 					disableDefaultUI:			true,
 					mapTypeControl:				false,
@@ -4870,18 +4915,17 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				    }
 				}
 				
-				var unique_map_id			=	m.id.toString() + "_gmap";
 				
 				VMM.attachElement("#" + m.id, "<div class='google-map' id='" + unique_map_id + "' style='width=100%;height=100%;'></div>");
 				
-				var map						=	new google.maps.Map(document.getElementById(unique_map_id), map_options);
+				map		= new google.maps.Map(document.getElementById(unique_map_id), map_options);
 				
-				if (VMM.ExternalAPI.googlemaps.defaultType(VMM.master_config.Timeline.maptype)) {
+				if (VMM.ExternalAPI.googlemaps.defaultType(VMM.ExternalAPI.googlemaps.maptype)) {
 					
 				} else {
 					map.mapTypes.set(layer, new google.maps.VeriteMapType(layer));
 					// ATTRIBUTION
-					var map_attribution_html =	"<div class='map-attribution'><div class='attribution-text'>" + map_attribution + "</div></div>";
+					map_attribution_html =	"<div class='map-attribution'><div class='attribution-text'>" + map_attribution + "</div></div>";
 					VMM.appendElement("#"+unique_map_id, map_attribution_html);
 				}
 				
@@ -4889,10 +4933,12 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				
 				// KML
 				function loadKML() {
-					var kml_url				=	m.url + "&output=kml";
-					kml_url					=	kml_url.replace("&output=embed", "");
-					var kml_layer			=	new google.maps.KmlLayer(kml_url, {preserveViewport:true});
-					var infowindow			=	new google.maps.InfoWindow();
+					var kml_url, kml_layer, infowindow, text;
+					
+					kml_url				= m.url + "&output=kml";
+					kml_url				= kml_url.replace("&output=embed", "");
+					kml_layer			= new google.maps.KmlLayer(kml_url, {preserveViewport:true});
+					infowindow			= new google.maps.InfoWindow();
 					kml_layer.setMap(map);
 
 					google.maps.event.addListenerOnce(kml_layer, "defaultviewport_changed", function() {
@@ -4906,7 +4952,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 					});
 					
 					google.maps.event.addListener(kml_layer, 'click', function(kmlEvent) {
-						var text			=	kmlEvent.featureData.description;
+						text			= kmlEvent.featureData.description;
 						showInfoWindow(text);
 						
 						function showInfoWindow(c) {
@@ -5187,7 +5233,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				var api_key,
 					callback_timeout= setTimeout(callback, VMM.master_config.timers.api, flick);
 					
-				if (VMM.master_config.Timeline.api_keys.flickr != "") {
+				if (typeof VMM.master_config.Timeline != 'undefined' && VMM.master_config.Timeline.api_keys.flickr != "") {
 					api_key = VMM.master_config.Timeline.api_keys.flickr;
 				} else {
 					api_key = Aes.Ctr.decrypt(VMM.master_config.api_keys_master.flickr, VMM.master_config.vp, 256)
@@ -5577,7 +5623,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 			
 		}
 	
-	}
+	}).init();
 	
 }
 
@@ -6858,8 +6904,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				navigation.nextDate = VMM.appendAndGetElement(navigation.nextBtnContainer, "<div>", "date", "");
 				navigation.prevDate = VMM.appendAndGetElement(navigation.prevBtnContainer, "<div>", "date", "");
 			}
-			navigation.nextTitle = VMM.appendAndGetElement(navigation.nextBtnContainer, "<div>", "title", "Title Goes Here");
-			navigation.prevTitle = VMM.appendAndGetElement(navigation.prevBtnContainer, "<div>", "title", "Title Goes Here");
+			navigation.nextTitle = VMM.appendAndGetElement(navigation.nextBtnContainer, "<div>", "title", "");
+			navigation.prevTitle = VMM.appendAndGetElement(navigation.prevBtnContainer, "<div>", "title", "");
 			
 			VMM.bindEvent(".nav-next", onNextClick);
 			VMM.bindEvent(".nav-previous", onPrevClick);
@@ -6875,10 +6921,10 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			VMM.attachElement(layout, "");
 			
 			// Get DOM Objects to local objects
-			$slider = VMM.getElement(layout);
-			$slider_mask = VMM.appendAndGetElement($slider, "<div>", "slider-container-mask");
-			$slider_container = VMM.appendAndGetElement($slider_mask, "<div>", "slider-container");
-			$slides_items = VMM.appendAndGetElement($slider_container, "<div>", "slider-item-container");
+			$slider				= VMM.getElement(layout);
+			$slider_mask		= VMM.appendAndGetElement($slider, "<div>", "slider-container-mask");
+			$slider_container	= VMM.appendAndGetElement($slider_mask, "<div>", "slider-container");
+			$slides_items		= VMM.appendAndGetElement($slider_container, "<div>", "slider-item-container");
 			
 			// BUILD NAVIGATION
 			buildNavigation();
@@ -7989,6 +8035,7 @@ if(typeof VMM != 'undefined' && typeof VMM.StoryJS == 'undefined') {
 /*	* CodeKit Import
 	* http://incident57.com/codekit/
 ================================================== */
+// @codekit-prepend "VMM.SliderJS.License.js";
 // @codekit-prepend "Core/VMM.StoryJS.js";
 
 
@@ -8081,7 +8128,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				},
 				rows: 				[1, 1, 1],
 				width: 				960,
-				height: 			200,
+				height: 			0,
 				marker: {
 					width: 			150,
 					height: 		50
@@ -8092,12 +8139,12 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				height: 			540
 			},
 			slider: {
-				width: 				720,
-				height: 			400,
+				width: 				960,
+				height: 			540,
 				content: {
 					width: 			720,
 					height: 		400,
-					padding: 		130
+					padding: 		100
 				},
 				nav: {
 					width: 			100,
@@ -8156,11 +8203,11 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			}
 			
 			config.nav.width			= config.width;
-			config.nav.height			= 200;
 			config.feature.width		= config.width;
 			config.feature.height		= config.height - config.nav.height;
 			VMM.master_config.StoryJS	= config;
 			this.events					= config.events;
+			
 		}
 		
 		/* CREATE TIMELINE STRUCTURE
@@ -8184,7 +8231,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				VMM.Lib.addClass(main_id, "vmm-notouch");
 			}
 			
-			slider		= new VMM.Slider(main_id + " div.slider", config);
+			slider		= new VMM.Slider($slider, config);
 			
 			if (!has_width) {
 				config.width = VMM.Lib.width($main);
@@ -8231,7 +8278,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		
 		function onComponentLoaded(e) {
 			config.loaded.percentloaded = config.loaded.percentloaded + 25;
-			
+			config.loaded.navigation = true;
 			if (config.loaded.slider && config.loaded.navigation) {
 				hideMessege();
 			}
@@ -8250,7 +8297,6 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			config.current_slide = slider.getCurrentNumber();
 			setHash(config.current_slide);
 		};
-		
 		
 		function setHash(n) {
 			if (config.hash_bookmark) {
@@ -8278,9 +8324,13 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				config.source	= _data;
 			}
 			
+			// LANGUAGE
 			VMM.Date.setLanguage(config.language);
 			VMM.master_config.language = config.language;
 			
+			// EXTERNAL API
+			VMM.ExternalAPI.setKeys(config.api_keys);
+			VMM.ExternalAPI.googlemaps.setMapType(config.maptype);
 			
 			// EVENTS
 			VMM.bindEvent($main, onDataReady, config.events.data_ready);
@@ -8298,6 +8348,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			
 			if (type.of(config.source) == "string" || type.of(config.source) == "object") {
 				//VMM.DataObj.getData(config.source);
+				getData(config.source);
 			} else {
 				//VMM.DataObj.getData(VMM.getElement(timeline_id));
 			}
@@ -8317,10 +8368,21 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		function getData(url) {
 			VMM.getJSON(url, function(d) {
 				//data = VMM.DataObj.getData(d);
-				VMM.fireEvent($main, config.events.data_ready);
+				prepareData(d);
+				
 			});
 		};
 		
+		function prepareData(d) {
+			var i	= 0,
+				pd	= d.sliderjs;
+			
+			for(i = 0; i < pd.slides.length; i++) {
+				pd.slides[i].uniqueid = VMM.Util.unique_ID(7);
+			}
+			
+			VMM.fireEvent($main, config.events.data_ready, pd);
+		}
 		/* MESSEGES 
 		================================================== */
 		function showMessege(e, msg) {
@@ -8356,7 +8418,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				ie7 = true;
 				VMM.fireEvent($main, config.events.messege, "Internet Explorer " + VMM.Browser.version + " is not supported. Please update your browser to version 8 or higher.");
 			} else {
-			
+				detachMessege();
 				reSize();
 				
 				// EVENT LISTENERS
@@ -8366,10 +8428,10 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				VMM.bindEvent($navigation, onNavUpdate, "UPDATE");
 			
 				// RESIZE EVENT LISTENERS
-				VMM.bindEvent($main, reSize, config.events.resize);
+				VMM.bindEvent(global, reSize, config.events.resize);
 				
 				// INITIALIZE COMPONENTS
-				//slider.init(data);
+				slider.init(data.slides);
 			}
 			
 			
@@ -8382,13 +8444,13 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		
 		function updateSize() {
 			trace("UPDATE SIZE");
-			config.width = VMM.Lib.width($main);
-			config.height = VMM.Lib.height($main);
+			config.width			= VMM.Lib.width($main);
+			config.height			= VMM.Lib.height($main);
 			
-			config.nav.width = config.width;
-			config.feature.width = config.width;
+			config.nav.width		= config.width;
+			config.feature.width	= config.width;
 			
-			config.feature.height = config.height - config.nav.height - 3;
+			config.feature.height	= config.height - config.nav.height - 3;
 		};
 		
 	};
