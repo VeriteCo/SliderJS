@@ -11,33 +11,10 @@
 /*	* CodeKit Import
 	* http://incident57.com/codekit/
 ================================================== */
-// @codekit-prepend "VMM.Timeline.License.js";
-
-// @codekit-prepend "Core/VMM.js";
-// @codekit-prepend "Core/VMM.Library.js";
-// @codekit-prepend "Core/VMM.Browser.js";
-// @codekit-prepend "Core/VMM.FileExtention.js";
-// @codekit-prepend "Core/VMM.Date.js";
-// @codekit-prepend "Core/VMM.Util.js";
-// @codekit-prepend "Core/VMM.LoadLib.js";
-
-// @codekit-prepend "Core/Media/VMM.ExternalAPI.js";
-// @codekit-prepend "Core/Media/VMM.MediaElement.js";
-// @codekit-prepend "Core/Media/VMM.MediaType.js";
-// @codekit-prepend "Core/Media/VMM.Media.js";
-// @codekit-prepend "Core/Media/VMM.TextElement.js";
-
-// @codekit-prepend "Core/Slider/VMM.DragSlider.js";
-// @codekit-prepend "Core/Slider/VMM.Slider.js";
-// @codekit-prepend "Core/Slider/VMM.Slider.Slide.js";
-
-// @codekit-prepend "VMM.Language.js";
-
-// @codekit-prepend "Core/Library/AES.js";
-// @codekit-prepend "Core/Library/bootstrap-tooltip.js";
+// @codekit-prepend "Core/VMM.StoryJS.js";
 
 
-/* Timeline
+/* SliderJS
 ================================================== */
 
 if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
