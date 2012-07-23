@@ -215,6 +215,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			// CREATE DOM STRUCTURE
 			$main	= VMM.getElement(main_id);
 			VMM.Lib.addClass($main, "vmm-sliderjs");
+			VMM.Lib.addClass($main, "vmm-storyjs");
 			
 			$container	= VMM.appendAndGetElement($main, "<div>", "container main");
 			$feature	= VMM.appendAndGetElement($container, "<div>", "feature");
