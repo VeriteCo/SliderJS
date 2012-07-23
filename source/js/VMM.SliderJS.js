@@ -6,7 +6,7 @@
 	* License, v. 2.0. If a copy of the MPL was not distributed with this
 	* file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-*/  
+*/ 
 
 /*	* CodeKit Import
 	* http://incident57.com/codekit/
@@ -42,13 +42,13 @@
 
 if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 	
-	VMM.SliderJS = function(_slider_id, w, h) {
+	VMM.SliderJS = function(_main_id, w, h) {
 		
 		var $main,
 			$feedback,
 			slider,
 			timenav,
-			version		= "0.1",
+			version		= "0.11",
 			main_id		= "#sliderjs",
 			events		= {},
 			data		= {},
@@ -81,7 +81,7 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				resize:				"resize"
 			},
 			id: 					main_id,
-			type: 					"slider",
+			type: 					"sliderjs",
 			touch:					false,
 			maptype: 				"toner",
 			preload:				4,
@@ -100,7 +100,8 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			height: 				540,
 			spacing: 				15,
 			loaded: {
-				slider: 			false, 
+				slider: 			false,
+				navigation:			false,
 				percentloaded: 		0
 			},
 			nav: {
@@ -210,28 +211,35 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 		/* CREATE TIMELINE STRUCTURE
 		================================================== */
 		function createStructure() {
-			$main	= VMM.getElement(main_id);
 			
-			VMM.Lib.addClass(main_id, "vmm-sliderjs");
+			// CREATE DOM STRUCTURE
+			$main	= VMM.getElement(main_id);
+			VMM.Lib.addClass($main, "vmm-sliderjs");
+			
+			$container	= VMM.appendAndGetElement($main, "<div>", "container main");
+			$feature	= VMM.appendAndGetElement($container, "<div>", "feature");
+			$slider		= VMM.appendAndGetElement($feature, "<div>", "vmm-slider");
+			$navigation	= VMM.appendAndGetElement($container, "<div>", "navigation");
+			$feedback	= VMM.appendAndGetElement($main, "<div>", "feedback", "");
+			
 			if (config.touch) {
 				VMM.Lib.addClass(main_id, "vmm-touch");
 			} else {
 				VMM.Lib.addClass(main_id, "vmm-notouch");
 			}
 			
-			$feedback	= VMM.appendAndGetElement($main, "<div>", "feedback", "");
 			slider		= new VMM.Slider(main_id + " div.slider", config);
 			
 			if (!has_width) {
-				config.width = VMM.Lib.width($timeline);
+				config.width = VMM.Lib.width($main);
 			} else {
-				VMM.Lib.width($timeline, config.width);
+				VMM.Lib.width($main, config.width);
 			}
 
 			if (!has_height) {
-				config.height = VMM.Lib.height($timeline);
+				config.height = VMM.Lib.height($main);
 			} else {
-				VMM.Lib.height($timeline, config.height);
+				VMM.Lib.height($main, config.height);
 			}
 			
 		}
@@ -253,24 +261,40 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			slider.setSize(config.feature.width, config.feature.height);
 		};
 		
+		/* ON LOADED
+		================================================== */
 		function onSliderLoaded(e) {
 			config.loaded.slider = true;
+			onComponentLoaded();
+		};
+		
+		function onNavLoaded(e) {
+			config.loaded.navigation = true;
 			onComponentLoaded();
 		};
 		
 		function onComponentLoaded(e) {
 			config.loaded.percentloaded = config.loaded.percentloaded + 25;
 			
-			if (config.loaded.slider) {
+			if (config.loaded.slider && config.loaded.navigation) {
 				hideMessege();
 			}
 		}
 		
+		/* ON UPDATE
+		================================================== */
 		function onSlideUpdate(e) {
 			is_moving = true;
 			config.current_slide = slider.getCurrentNumber();
 			setHash(config.current_slide);
 		};
+		
+		function onNavUpdate(e) {
+			is_moving = true;
+			config.current_slide = slider.getCurrentNumber();
+			setHash(config.current_slide);
+		};
+		
 		
 		function setHash(n) {
 			if (config.hash_bookmark) {
@@ -301,13 +325,12 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			VMM.Date.setLanguage(config.language);
 			VMM.master_config.language = config.language;
 			
-			$feedback = VMM.appendAndGetElement($main, "<div>", "feedback", "");
 			
 			// EVENTS
 			VMM.bindEvent($main, onDataReady, config.events.data_ready);
 			VMM.bindEvent($main, showMessege, config.events.messege);
 			
-			//VMM.fireEvent(global, config.events.messege, VMM.master_config.language.messages.loading_timeline);
+			VMM.fireEvent($main, config.events.messege, "LOADING");
 			
 			/* GET DATA
 			================================================== */
@@ -377,22 +400,20 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				ie7 = true;
 				VMM.fireEvent($main, config.events.messege, "Internet Explorer " + VMM.Browser.version + " is not supported. Please update your browser to version 8 or higher.");
 			} else {
-				// CREATE DOM STRUCTURE
-				VMM.attachElement($main, "");
-				VMM.appendElement($main, "<div class='container main'><div class='feature'><div class='slider'></div></div><div class='navigation'></div></div>");
 			
 				reSize();
-			
-				VMM.bindEvent("div.slider", onSliderLoaded, "LOADED");
-				VMM.bindEvent("div.navigation", onTimeNavLoaded, "LOADED");
-				VMM.bindEvent("div.slider", onSlideUpdate, "UPDATE");
-				VMM.bindEvent("div.navigation", onMarkerUpdate, "UPDATE");
-			
-				//slider.init(data);
+				
+				// EVENT LISTENERS
+				VMM.bindEvent($slider, onSliderLoaded, "LOADED");
+				VMM.bindEvent($navigation, onNavLoaded, "LOADED");
+				VMM.bindEvent($slider, onSlideUpdate, "UPDATE");
+				VMM.bindEvent($navigation, onNavUpdate, "UPDATE");
 			
 				// RESIZE EVENT LISTENERS
 				VMM.bindEvent($main, reSize, config.events.resize);
 				
+				// INITIALIZE COMPONENTS
+				//slider.init(data);
 			}
 			
 			

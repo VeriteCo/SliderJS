@@ -1,0 +1,124 @@
+/**
+	* SliderJS CSS
+	* Designed and built by Zach Wise at VéritéCo
+
+	* This Source Code Form is subject to the terms of the Mozilla Public
+	* License, v. 2.0. If a copy of the MPL was not distributed with this
+	* file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+*/
+
+/*	THEME DEFAULT
+----------------------------------------------------- */
+	//GFX
+	.base-sprite() {
+		background-image: url(slider.png?v3.4);
+	}
+	.loading-sprite() {
+		background-image: url(loading.gif?v3.4);
+	}
+	
+	// COLORS
+	@color-base:					#FFF;
+	@color-line: 					#CCC;
+	@color-line-hover: 				#666;
+	@color-dark:					#000;
+	@color-dark-second: 			#333;
+	@color-dark-third: 				#666;
+	@color-dark-fourth: 			#999;
+	@color-dark-fifth: 				#E3E3E3;
+	@color-background-dark:			#E9E9E9;
+	// COLOR THEME
+	@color-theme:					#08C;	//#FF3712; //#FF0000;
+	
+/*	BASE
+----------------------------------------------------- */
+
+// CSS Reset
+@import "Reset.less";
+
+// Core variables and mixins
+@import "Font.Default.less";
+@import "Variables.less";
+@import "Mixins.less"; 
+@import "GFX.less";
+
+// Grid system and page structure
+@import "VMM.Slider.less";
+
+
+// Typography
+@import "Typography.less";
+
+// Grid system and page structure
+
+
+/* MEDIA QUERIES
+================================================== */
+
+/* Mobile and iPhone
+================================================== */
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+	
+}
+
+/* BELOW 600px
+================================================== */
+
+@media (max-width: 600px) {
+	.slider {
+		.slider-item {
+			.content {
+				.content-container {
+					display:block;
+					.text {
+						width:100%;
+						max-width:100%;
+						min-width:120px;
+						display:block;
+						.container {
+							display:block;
+							-webkit-hyphens:auto;
+							   -moz-hyphens:auto;
+							    -ms-hyphens:auto;
+							        hyphens:auto;
+							word-wrap:break-word;
+							
+						}
+					}
+					.media {
+						width:100%;
+						min-width:50%;
+						float: none;
+						.media-wrapper {
+							margin-left:0px;
+							margin-right:0px;
+							width:100%;
+							display:block;
+							.media-container {
+								img, iframe {
+									//width:100%;
+									//max-height:350px;
+								}
+							}
+						}
+					}
+					.media.text-media {
+						.media-wrapper {
+							.media-container {
+								border: none;
+							}
+						}
+					}
+				}
+				.content-container.layout-text {
+					
+				}
+				.content-container.layout-media {
+					
+				}
+			}
+		}
+	}
+	
+}

@@ -1,0 +1,139 @@
+{
+    "sliderjs":
+    {
+        "headline":"The Kitchen Sink, Évier de la Cuisine ",
+        "type":"default",
+		"text":"An example of the different kinds of stuff you can do.",
+		"asset":
+        {
+            "media":"http://2.bp.blogspot.com/-dxJbW0CG8Zs/TmkoMA5-cPI/AAAAAAAAAqw/fQpsz9GpFdo/s1600/voyage-dans-la-lune-1902-02-g.jpg",
+            "credit":"",
+            "caption":""
+        },
+        "slides": [
+            {
+                "asset":
+                {
+                    "media":"http://youtu.be/5NlVttFRPpU?hd=1&t=3s",
+                    "credit":"",
+                    "caption":"From the creators of the game Flower comes Journey for the PlayStation 3."
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://maps.google.com/?ll=42.054932,-87.674654&spn=0.014785,0.023754&hnear=1630+Lake+Ave,+Wilmette,+Illinois+60091&t=v&z=16",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://maps.google.com/maps?q=Northwestern+University,+Sheridan+Road,+Evanston,+IL&hl=en&ll=42.056972,-87.676907&spn=0.02957,0.047507&sll=42.054932,-87.674654&sspn=0.014785,0.023754&oq=northwestern+&t=v&hq=Northwestern+University,+Sheridan+Road,+Evanston,+IL&z=15",
+                    "credit":"",
+					"thumbnail":"http://farm7.staticflickr.com/6204/6114531655_71030ae15f_s.jpg",
+                    "caption":""
+                }
+            },
+
+			{
+                "headline":"Le portrait mystérieux ",
+                "asset":
+                {
+                    "media":"http://youtu.be/lIvftGgps24",
+                    "credit":"Georges Méliès",
+                    "caption":"Le portrait mystérieux"
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://youtu.be/JdBqHgwN7Pg",
+                    "credit":"Georges Méliès",
+                    "caption":"L'oeuf du sorcier"
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://youtu.be/SvmM_YSnWX8",
+                    "credit":"Georges Méliès",
+                    "caption":"Le juif errant"
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://youtu.be/nIylL8ufx3Y",
+                    "credit":"Georges Méliès",
+                    "caption":"Le tonnerre de Jupiter"
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://www.flickr.com/photos/zachwise/6856858425/in/photostream",
+                    "credit":"Zach Wise",
+                    "caption":"Feels like Siberia again"
+                }
+            },
+			{
+                "headline":"Flickr",
+                "asset":
+                {
+                    "media":"http://www.flickr.com/photos/zachwise/6687123779/in/photostream",
+                    "credit":"Zach Wise",
+                    "caption":"Enjoying the snow while sheltered at the train station"
+                }
+            },
+			{
+                "headline":"A Tweet",
+                "text":"To add a tweet, just add the link.",
+                "asset":
+                {
+                    "media":"https://twitter.com/#!/neonmarg/status/167006310850760706",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+
+			{
+                "headline":"SoundCloud ",
+                "text":"Just add a link to the track",
+                "asset":
+                {
+                    "media":"http://soundcloud.com/radiohead/radiohead_separator-anstam-rmx",
+                    "credit":"Radiohead Separator - Anstam RMX",
+                    "caption":""
+                }
+            },
+			{
+                "headline":"Vimeo",
+                "asset":
+                {
+                    "media":"https://vimeo.com/34724990",
+                    "credit":"Whitestone Motion Pictures",
+                    "caption":"Whitestone Motion Pictures proudly presents ‘Jack and the Dustbowl’, a short film about overcoming adversity and making the impossible, possible."
+                }
+            },
+			{
+                "asset":
+                {
+                    "media":"http://twitter.com/alykat/status/164184609519697920",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+			{
+                "headline":"Some Tweet Response",
+                "asset":
+                {
+                    "media":"http://twitter.com/ArjunaSoriano/status/164181156147900416",
+                    "credit":"",
+                    "caption":""
+                }
+            }
+        ]
+    }
+}
