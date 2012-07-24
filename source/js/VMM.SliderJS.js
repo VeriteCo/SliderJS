@@ -192,19 +192,19 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			
 			// CREATE DOM STRUCTURE
 			$main	= VMM.getElement(main_id);
-			VMM.Lib.addClass($main, "vmm-sliderjs");
-			VMM.Lib.addClass($main, "vmm-storyjs");
+			VMM.Lib.addClass($main, "vco-sliderjs");
+			VMM.Lib.addClass($main, "vco-storyjs");
 			
-			$container	= VMM.appendAndGetElement($main, "<div>", "container main");
-			$feature	= VMM.appendAndGetElement($container, "<div>", "feature");
-			$slider		= VMM.appendAndGetElement($feature, "<div>", "vmm-slider");
-			$navigation	= VMM.appendAndGetElement($container, "<div>", "navigation");
-			$feedback	= VMM.appendAndGetElement($main, "<div>", "feedback", "");
+			$container	= VMM.appendAndGetElement($main, "<div>", "vco-container vco-main");
+			$feature	= VMM.appendAndGetElement($container, "<div>", "vco-feature");
+			$slider		= VMM.appendAndGetElement($feature, "<div>", "vco-slider");
+			$navigation	= VMM.appendAndGetElement($container, "<div>", "vco-navigation");
+			$feedback	= VMM.appendAndGetElement($main, "<div>", "vco-feedback", "");
 			
 			if (config.touch) {
-				VMM.Lib.addClass(main_id, "vmm-touch");
+				VMM.Lib.addClass(main_id, "vco-touch");
 			} else {
-				VMM.Lib.addClass(main_id, "vmm-notouch");
+				VMM.Lib.addClass(main_id, "vco-notouch");
 			}
 			
 			slider		= new VMM.Slider($slider, config);
