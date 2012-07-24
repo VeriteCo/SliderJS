@@ -83,32 +83,21 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 				percentloaded: 		0
 			},
 			nav: {
-				start_page: 		false,
-				interval_width: 	200,
-				density: 			4,
-				minor_width: 		0,
-				minor_left:			0,
+				types:				["bullet", "thumb-small", "thumb-large", "none"],
+				thumb: {
+					width:			50,
+					height:			50,
+					padding:		2
+				},
+				spacing: 			10,
 				constraint: {
 					left:			0,
 					right:			0,
 					right_min:		0,
 					right_max:		0
 				},
-				zoom: {
-					adjust:			0
-				},
-				multiplier: {
-					current: 		6,
-					min: 			.1,
-					max: 			50
-				},
-				rows: 				[1, 1, 1],
 				width: 				960,
-				height: 			0,
-				marker: {
-					width: 			150,
-					height: 		50
-				}
+				height: 			0
 			},
 			feature: {
 				width: 				960,
@@ -202,10 +191,15 @@ if(typeof VMM != 'undefined' && typeof VMM.SliderJS == 'undefined') {
 			$feedback	= VMM.appendAndGetElement($main, "<div>", "vco-feedback", "");
 			
 			if (config.touch) {
-				VMM.Lib.addClass(main_id, "vco-touch");
+				VMM.Lib.addClass($main, "vco-touch");
 			} else {
-				VMM.Lib.addClass(main_id, "vco-notouch");
+				VMM.Lib.addClass($main, "vco-notouch");
 			}
+			
+			if (typeof config.language.right_to_left != 'undefined') {
+				VMM.Lib.addClass($main, "vco-right-to-left");
+			}
+			
 			
 			slider		= new VMM.Slider($slider, config);
 			
